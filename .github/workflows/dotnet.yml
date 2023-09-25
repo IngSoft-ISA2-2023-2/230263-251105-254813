@@ -5,7 +5,7 @@ name: .NET
 
 on:
   push:
-    branches: [ "develop" ] #Esta seria nuestra rama tronco "trunk"
+    branches: [ "main" ] #Esta seria nuestra rama tronco "trunk"
   pull_request:
     branches: [ "develop" ]
 
