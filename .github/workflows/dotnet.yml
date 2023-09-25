@@ -22,8 +22,8 @@ jobs:
         dotnet-version: 6.0.x 
     - name: Restore dependencies
       run: dotnet restore
-      working-directory: Codigo/Backend/PharmaGo.WebApi
-                          /PharmaGo.WebApi.csproj
+      working-directory: Codigo\Backend\PharmaGo.WebApi
+                          \PharmaGo.WebApi.csproj
 
     - name: Build
       run: dotnet build --no-restore
