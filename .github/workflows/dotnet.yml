@@ -28,4 +28,4 @@ jobs:
       working-directory: Codigo\Backend\PharmaGo.WebApi
     - name: Test
       run: dotnet test --no-build --verbosity normal
-      working-directory: Codigo\Backend\PharmaGo.Test
+      working-directory: Codigo\Backend\PharnaGo.Test
