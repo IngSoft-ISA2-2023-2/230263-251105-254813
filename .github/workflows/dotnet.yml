@@ -1,0 +1,28 @@
+name: .NET
+
+on:
+  push:
+    branches: [ "main", "develop" ] #Nuestra rama tronco "trunk" seria develop
+  pull_request:
+    branches: [ "main", "develop" ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x 
+    - name: Restore dependencies
+      run: dotnet restore
+      working-directory: Codigo\Backend\PharmaGo.WebApi
+    - name: Build
+      run: dotnet build --no-restore
+      working-directory: Codigo\Backend\PharmaGo.WebApi
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+      working-directory: Codigo\Backend\PharnaGo.Test
