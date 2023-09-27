@@ -46,21 +46,11 @@ namespace PharmaGo.BusinessLogic
                     invitation.Role = role;
                 }
 
-                if (!invitation.Role.Name.Equals("Administrator"))
+                if (invitation.Pharmacy is null)
                 {
-                    if (invitation.Pharmacy is null)
-                    {
-                        throw new InvalidResourceException("A pharmacy is required.");
-                    }
+                       throw new InvalidResourceException("A pharmacy is required.");
                 }
-                else
-                {
-                    if (invitation.Pharmacy != null)
-                    {
-                        throw new InvalidResourceException("A pharmacy is not required.");
-                    }
-
-                }
+                
 
                 if (invitation.Pharmacy != null)
                 {
@@ -82,7 +72,7 @@ namespace PharmaGo.BusinessLogic
             if (String.IsNullOrEmpty(invitation.UserName)) throw new InvalidResourceException("Invalid UserName.");
 
             Invitation alreadyUserInvitation = _invitationRepository.GetOneByExpression(i => i.UserName == invitation.UserName);
-            if (alreadyUserInvitation != null) throw new InvalidResourceException("Invitation already exist.");
+            if (alreadyUserInvitation != null && alreadyUserInvitation.UserName != null) throw new InvalidResourceException("Invitation already exist.");
 
             invitation.UserCode = this.CreateUserCode();
 
