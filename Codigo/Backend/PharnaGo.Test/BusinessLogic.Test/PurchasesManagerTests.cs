@@ -4,6 +4,7 @@ using PharmaGo.BusinessLogic;
 using PharmaGo.Domain.Entities;
 using PharmaGo.Exceptions;
 using PharmaGo.IDataAccess;
+using System.Linq.Expressions;
 
 namespace PharmaGo.Test.BusinessLogic.Test
 {
@@ -25,6 +26,7 @@ namespace PharmaGo.Test.BusinessLogic.Test
         private ICollection<PurchaseDetail> purchaseDetail;
         private Drug drug1;
         private Drug drug2;
+        private Drug drug1_2;
         private UnitMeasure unitMeasure1;
         private UnitMeasure unitMeasure2;
         private Presentation presentation1;
@@ -52,13 +54,15 @@ namespace PharmaGo.Test.BusinessLogic.Test
 
             drug1 = new Drug { Id = 1, Deleted = false, Code = "XF324", Name = "Aspirina", Prescription = false, Price = 100, Stock = 50, Quantity = 10, UnitMeasure = unitMeasure1, Presentation = presentation1, Symptom = "afecciones bronquiales que cursan con tos y secreciones" };
             drug2 = new Drug { Id = 2, Deleted = false, Code = "RS546", Name = "Abrilar", Prescription = false, Price = 250, Stock = 50, Quantity = 20, UnitMeasure = unitMeasure2, Presentation = presentation2, Symptom = "acción analgésica, alivio de los dolores ocasionales leves o\r\nmoderados, como dolores de cabeza, musculares, de espalda.\r\nPresentación: comprimidos" };
+            drug1_2 = new Drug { Id = 3, Deleted = false, Code = "XDE32", Name = "Novemina", Prescription = false, Price = 300, Stock = 50, Quantity = 15, UnitMeasure = unitMeasure1, Presentation = presentation1, Symptom = "acción analgésica, alivio de los dolores ocasionales leves o\r\nmoderados, como dolores de cabeza, musculares, de espalda.\r\nPresentación: comprimidos" };
 
-            pharmacy = new Pharmacy { Id = 1, Name = "Farmacia 1", Address = "Av. Italia 12345", Users = new List<User>(), Drugs = new List<Drug> { drug1 } };
+            pharmacy = new Pharmacy { Id = 1, Name = "Farmacia 1", Address = "Av. Italia 12345", Users = new List<User>(), Drugs = new List<Drug> { drug1, drug1_2 } };
             pharmacy2 = new Pharmacy { Id = 2, Name = "Farmacia 2", Address = "Av. Italia 22222", Users = new List<User>(), Drugs = new List<Drug> { drug2 } };
 
             purchaseDetail = new List<PurchaseDetail> {
                 new PurchaseDetail{Id = 1, Quantity = 2, Price = new decimal(100), Drug =  drug1, Pharmacy = pharmacy, Status = "Pending"},
-                new PurchaseDetail{Id = 2, Quantity = 1, Price = new decimal(250), Drug = drug2, Pharmacy = pharmacy2, Status = "Approved" }
+                //new PurchaseDetail{Id = 2, Quantity = 1, Price = new decimal(250), Drug = drug2, Pharmacy = pharmacy2, Status = "Approved" }
+                 new PurchaseDetail{Id = 2, Quantity = 1, Price = new decimal(300), Drug = drug1_2, Pharmacy = pharmacy, Status = "Approved" }
             };
 
             purchase = new Purchase
@@ -79,7 +83,7 @@ namespace PharmaGo.Test.BusinessLogic.Test
                 details = purchaseDetail
             };
             session = new Session { Id = 1, Token = new Guid(token), UserId = 1 };
-            user = new User { Id = 1, Email = "fernando@gmail.com", Password = "Asdfer234..", Pharmacy = pharmacy};
+            user = new User { Id = 1, Email = "fernando@gmail.com", Password = "Asdfer234..", Pharmacy = pharmacy };
         }
 
         [TestCleanup]
@@ -100,13 +104,13 @@ namespace PharmaGo.Test.BusinessLogic.Test
             pharmacy.Drugs = new List<Drug>
             {
                 drug1,
-                drug2
+                drug1_2
             };
             int pharmacyId = 1;
             int pharmacyId2 = 2;
 
             _pharmacyRespository.Setup(y => y.GetOneByExpression(x => x.Id == pharmacyId)).Returns(pharmacy);
-            _pharmacyRespository.Setup(y => y.GetOneByExpression(x => x.Id == pharmacyId2)).Returns(pharmacy2);
+            //_pharmacyRespository.Setup(y => y.GetOneByExpression(x => x.Id == pharmacyId2)).Returns(pharmacy2);
             _purchaseRespository.Setup(x => x.InsertOne(purchase));
             _purchaseRespository.Setup(x => x.Save());
 
@@ -127,7 +131,7 @@ namespace PharmaGo.Test.BusinessLogic.Test
             purchase.BuyerEmail = "";
 
             //Act
-           var response = _purchasesManager.CreatePurchase(purchase);
+            var response = _purchasesManager.CreatePurchase(purchase);
 
         }
 
@@ -151,7 +155,7 @@ namespace PharmaGo.Test.BusinessLogic.Test
             purchase.details = new List<PurchaseDetail>();
 
             //Act
-           var response = _purchasesManager.CreatePurchase(purchase);
+            var response = _purchasesManager.CreatePurchase(purchase);
         }
 
         [TestMethod]
@@ -187,19 +191,46 @@ namespace PharmaGo.Test.BusinessLogic.Test
             pharmacy.Drugs = new List<Drug>
             {
                 drug1,
-                drug2
+                drug1_2
             };
-            Drug drug3 = new Drug { Id = 3, Deleted = false, Code = "RS500", Name = "Perifar", Prescription = false, Price = 250, Stock = 50, Quantity = 20, UnitMeasure = unitMeasure2, Presentation = presentation2, Symptom = "acción analgésica, alivio de los dolores ocasionales leves o\r\nmoderados, como dolores de cabeza, musculares, de espalda.\r\nPresentación: comprimidos" };
-            Pharmacy pharmacy3 = new Pharmacy { Id = 3, Name = "Farmacia 3", Address = "Av. Italia 3333", Users = new List<User>(), Drugs = new List<Drug> { drug3 } };
-            PurchaseDetail purchaseDetail3 = new PurchaseDetail { Id = 1, Quantity = 2, Price = new decimal(100), Drug = drug2, Pharmacy = pharmacy3, Status = "Pending" };
+            Drug drug3 = new Drug { Id = 4, Deleted = false, Code = "RS500", Name = "Perifar", Prescription = false, Price = 250, Stock = 50, Quantity = 20, UnitMeasure = unitMeasure2, Presentation = presentation2, Symptom = "acción analgésica, alivio de los dolores ocasionales leves o\r\nmoderados, como dolores de cabeza, musculares, de espalda.\r\nPresentación: comprimidos" };
+            PurchaseDetail purchaseDetail3 = new PurchaseDetail { Id = 1, Quantity = 2, Price = new decimal(100), Drug = drug3, Pharmacy = pharmacy, Status = "Pending" };
             purchase.details.Add(purchaseDetail3);
 
             _pharmacyRespository.Setup(y => y.GetOneByExpression(x => x.Id == 1)).Returns(pharmacy);
-            _pharmacyRespository.Setup(y => y.GetOneByExpression(x => x.Id == 2)).Returns(pharmacy2);
-            _pharmacyRespository.Setup(y => y.GetOneByExpression(x => x.Id == 3)).Returns(pharmacy3);
 
             //Act
             var response = _purchasesManager.CreatePurchase(purchase);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidResourceException))]
+        public void Create_Purchase_Fail_Two_Pharmacy_Diferent()
+        {
+            //Arrange
+
+
+            Drug drug4 = new Drug { Id = 4, Deleted = false, Code = "XL329", Name = "Loratadina", Prescription = false, Price = 100, Stock = 50, Quantity = 10, UnitMeasure = unitMeasure1, Presentation = presentation1, Symptom = "afecciones bronquiales que cursan con tos y secreciones" };
+            Pharmacy pharmacy4 = new Pharmacy { Id = 4, Name = "Farmacia 4", Address = "Av. Italia 12345", Users = new List<User>(), Drugs = new List<Drug> { drug4 } };
+            Drug drug3 = new Drug { Id = 3, Deleted = false, Code = "RS500", Name = "Perifar", Prescription = false, Price = 250, Stock = 50, Quantity = 20, UnitMeasure = unitMeasure2, Presentation = presentation2, Symptom = "acción analgésica, alivio de los dolores ocasionales leves o\r\nmoderados, como dolores de cabeza, musculares, de espalda.\r\nPresentación: comprimidos" };
+            Pharmacy pharmacy3 = new Pharmacy { Id = 3, Name = "Farmacia 3", Address = "Av. Italia 3333", Users = new List<User>(), Drugs = new List<Drug> { drug3 } };
+            PurchaseDetail purchaseDetail3 = new PurchaseDetail { Id = 1, Quantity = 2, Price = new decimal(100), Drug = drug3, Pharmacy = pharmacy3, Status = "Pending" };
+            PurchaseDetail purchaseDetail4 = new PurchaseDetail { Id = 2, Quantity = 2, Price = new decimal(100), Drug = drug4, Pharmacy = pharmacy4, Status = "Pending" };
+            //PurchaseDetail purchaseDetail2 = new PurchaseDetail { Id = 1, Quantity = 2, Price = new decimal(100), Drug = drug2, Pharmacy = pharmacy2, Status = "Pending" };
+            List<PurchaseDetail> purchaseDetailsFail = new List<PurchaseDetail>();
+            purchaseDetailsFail.Add(purchaseDetail3);
+            purchaseDetailsFail.Add(purchaseDetail4);
+            var purchaseFail = new Purchase
+            {
+                Id = 3,
+                BuyerEmail = "roberto.perez@gmail.com",
+                PurchaseDate = new DateTime(2022, 09, 19, 14, 34, 44),
+                TotalAmount = new decimal(450),
+                details = purchaseDetailsFail
+            };
+
+            //Act
+            var response = _purchasesManager.CreatePurchase(purchaseFail);
         }
 
         [TestMethod]
@@ -216,7 +247,7 @@ namespace PharmaGo.Test.BusinessLogic.Test
                 new PurchaseDetail{Id = 2, Quantity = 51, Price = new decimal(250), Drug = drug2 }
             };
             purchase.details = purchaseDetail;
-            
+
             //Act
             var response = _purchasesManager.CreatePurchase(purchase);
         }
@@ -233,7 +264,7 @@ namespace PharmaGo.Test.BusinessLogic.Test
             };
             purchaseDetail = new List<PurchaseDetail> {
                 new PurchaseDetail{Id = 1, Quantity = 2, Price = new decimal(100), Drug =  drug1, Pharmacy =  new Pharmacy { Id = 0}},
-                new PurchaseDetail{Id = 2, Quantity = 51, Price = new decimal(250), Drug = drug2, Pharmacy = pharmacy }
+                //new PurchaseDetail{Id = 2, Quantity = 51, Price = new decimal(250), Drug = drug2, Pharmacy = pharmacy }
             };
             purchase.details = purchaseDetail;
 
@@ -248,10 +279,10 @@ namespace PharmaGo.Test.BusinessLogic.Test
             //Arrange
             pharmacy.Drugs = new List<Drug>();
             pharmacy.Drugs.Add(drug1);
-            pharmacy.Drugs.Add(drug2);
+            pharmacy.Drugs.Add(drug1_2);
             purchaseDetail = new List<PurchaseDetail> {
                 new PurchaseDetail{Id = 1, Quantity = 0, Price = new decimal(100), Drug =  drug1, Pharmacy = pharmacy},
-                new PurchaseDetail{Id = 2, Quantity = 51, Price = new decimal(250), Drug = drug2, Pharmacy = pharmacy2 }
+                new PurchaseDetail{Id = 2, Quantity = 51, Price = new decimal(250), Drug = drug1_2, Pharmacy = pharmacy }
             };
             purchase.details = purchaseDetail;
 
@@ -273,7 +304,7 @@ namespace PharmaGo.Test.BusinessLogic.Test
             };
             var guidToken = new Guid(token);
             _sessionRespository.Setup(z => z.GetOneByExpression(s => s.Token == guidToken))
-                .Returns(new Session {Id = 1, Token = guidToken, UserId = 1 });
+                .Returns(new Session { Id = 1, Token = guidToken, UserId = 1 });
             _userRespository.Setup(u => u.GetOneDetailByExpression(u => u.Id == 1))
                 .Returns(user);
             _purchaseRespository.Setup(y => y.GetAllByExpression(s => s.Id > 0))
@@ -524,7 +555,7 @@ namespace PharmaGo.Test.BusinessLogic.Test
         public void Approve_Purchase_Fail_Purchase_Not_Found()
         {
             //Arrange
-            Purchase p = null; 
+            Purchase p = null;
             _purchaseRespository
                 .Setup(y => y.GetOneDetailByExpression(p => p.Id == 0))
                 .Returns(p);

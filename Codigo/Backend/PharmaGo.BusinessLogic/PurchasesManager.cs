@@ -50,6 +50,7 @@ namespace PharmaGo.BusinessLogic
             if (purchase.PurchaseDate == DateTime.MinValue)
                 throw new InvalidResourceException("The purchase date is a mandatory field");
 
+            bool differentPharmacy = DistintasFarmaciasEnMismaCompra(purchase.details);
             decimal total = 0;
             foreach (var detail in purchase.details)
             {
@@ -81,6 +82,25 @@ namespace PharmaGo.BusinessLogic
             _purchasesRepository.Save();
 
             return purchase;
+        }
+
+        private bool DistintasFarmaciasEnMismaCompra(ICollection<PurchaseDetail> details)
+        {
+            bool differentPharmacy = false;
+            int firstPharmacyId = 0;
+            firstPharmacyId = details.First().Pharmacy.Id;
+            foreach (var detail in details)
+            {
+                if (detail.Pharmacy.Id != firstPharmacyId)
+                {
+                    differentPharmacy = true;
+                }
+            }
+            if (differentPharmacy)
+            {
+                throw new InvalidResourceException("There are products from different pharmacies in the purchase");
+            }
+            return differentPharmacy;
         }
 
         private string generateTrackingCode()
