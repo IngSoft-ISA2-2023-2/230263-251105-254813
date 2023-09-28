@@ -71,7 +71,7 @@ namespace PharmaGo.BusinessLogic
 
             if (String.IsNullOrEmpty(invitation.UserName)) throw new InvalidResourceException("Invalid UserName.");
             User exists = _userRepository.GetOneByExpression(u => u.UserName.ToLower() == invitation.UserName.ToLower());
-            if (exists.UserName != null)
+            if (exists != null)
                 throw new InvalidResourceException("Invalid Username, Username already exists");
             Invitation alreadyUserInvitation = _invitationRepository.GetOneByExpression(i => i.UserName == invitation.UserName);
             if (alreadyUserInvitation != null && alreadyUserInvitation.UserName != null) throw new InvalidResourceException("Invitation already exist.");

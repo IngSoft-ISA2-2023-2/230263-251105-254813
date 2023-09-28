@@ -179,10 +179,10 @@ namespace PharmaGo.Test.BusinessLogic.Test
                 Role = new Role() { Name = "Administrator" },
                 Created = DateTime.Now
             };
-
+            User user2 = null;
             _sessionMock.Setup(session => session.GetOneByExpression(It.IsAny<Expression<Func<Session, bool>>>()))
                 .Returns(new Session());
-            _userMock.Setup(user => user.GetOneByExpression(It.IsAny<Expression<Func<User, bool>>>())).Returns(new User() { UserName = null });
+            _userMock.Setup(user => user.GetOneByExpression(It.IsAny<Expression<Func<User, bool>>>())).Returns(user2);
             _userMock.Setup(user => user.GetOneDetailByExpression(It.IsAny<Expression<Func<User, bool>>>())).Returns(user);
 
             _invitationMock.Setup(i => i.GetOneByExpression(It.IsAny<Expression<Func<Invitation, bool>>>())).Returns(newInvitation);
@@ -257,6 +257,7 @@ namespace PharmaGo.Test.BusinessLogic.Test
             var token = "Test";
             var user = new User() { Id = 1,UserName = "Pablo5", Role = new Role() { Name = "Administrator" } };
             Invitation nullInvitation = null;
+            User user2 = null;
             Role adminRole = new Role() { Name = "Administrator" };
             int invitationID = 1;
             var newInvitation = new Invitation();
@@ -273,7 +274,7 @@ namespace PharmaGo.Test.BusinessLogic.Test
 
             _sessionMock.Setup(session => session.GetOneByExpression(It.IsAny<Expression<Func<Session, bool>>>()))
                 .Returns(new Session());
-            _userMock.Setup(user => user.GetOneByExpression(It.IsAny<Expression<Func<User,bool>>>())).Returns(new User() { UserName = null});
+            _userMock.Setup(user => user.GetOneByExpression(It.IsAny<Expression<Func<User,bool>>>())).Returns(user2);
             _userMock.Setup(user => user.GetOneDetailByExpression(It.IsAny<Expression<Func<User, bool>>>())).Returns(user);
 
             _invitationMock.Setup(i => i.GetOneByExpression(It.IsAny<Expression<Func<Invitation, bool>>>())).Returns(newInvitation);
@@ -718,9 +719,11 @@ namespace PharmaGo.Test.BusinessLogic.Test
             var token = "Test";
             var user = new User() { Id = 1, Role = new Role() { Name = "Owner" } };
             var invitation = new Invitation() { UserName = "Test" };
+            User user2 = null;
             _sessionMock.Setup(session => session.GetOneByExpression(It.IsAny<Expression<Func<Session, bool>>>()))
                 .Returns(new Session());
-            _userMock.Setup(user => user.GetOneByExpression(It.IsAny<Expression<Func<User, bool>>>())).Returns(new User() { UserName = null });
+            _userMock.Setup(user => user.GetOneByExpression(It.IsAny<Expression<Func<User, bool>>>())).Returns(user2);
+
             _userMock.Setup(user => user.GetOneDetailByExpression(It.IsAny<Expression<Func<User, bool>>>())).Returns(user);
 
             _invitationMock.Setup(i => i.GetOneByExpression(It.IsAny<Expression<Func<Invitation, bool>>>())).Returns((Invitation)null);
@@ -744,9 +747,10 @@ namespace PharmaGo.Test.BusinessLogic.Test
             var token = "Test";
             var user = new User() { Id = 1, Role = new Role() { Name = "Owner" }, Pharmacy = new Pharmacy() { Id = 1, Name = "Pharmacy" }};
             var invitation = new Invitation() { UserName = "Test" };
+            User user2 = null;
             _sessionMock.Setup(session => session.GetOneByExpression(It.IsAny<Expression<Func<Session, bool>>>()))
                 .Returns(new Session());
-            _userMock.Setup(user => user.GetOneByExpression(It.IsAny<Expression<Func<User, bool>>>())).Returns(new User() { UserName = null });
+            _userMock.Setup(user => user.GetOneByExpression(It.IsAny<Expression<Func<User, bool>>>())).Returns(user2);
             _userMock.Setup(user => user.GetOneDetailByExpression(It.IsAny<Expression<Func<User, bool>>>())).Returns(user);
 
             _invitationMock.Setup(i => i.GetOneByExpression(It.IsAny<Expression<Func<Invitation, bool>>>())).Returns((Invitation)null);
@@ -771,10 +775,11 @@ namespace PharmaGo.Test.BusinessLogic.Test
             var token = "Test";
             var user = new User() { Id = 1, Role = new Role() { Name = "Owner" }, Pharmacy = new Pharmacy() { Id = 1, Name = "Pharmacy" } };
             var invitation = new Invitation() { UserName = "Test" };
-
+            User user2 = null;
             _sessionMock.Setup(session => session.GetOneByExpression(It.IsAny<Expression<Func<Session, bool>>>()))
                 .Returns(new Session());
-            _userMock.Setup(user => user.GetOneByExpression(It.IsAny<Expression<Func<User, bool>>>())).Returns(new User() { UserName = null });
+            _userMock.Setup(user => user.GetOneByExpression(It.IsAny<Expression<Func<User, bool>>>())).Returns(user2);
+
             _userMock.Setup(user => user.GetOneDetailByExpression(It.IsAny<Expression<Func<User, bool>>>())).Returns(user);
             _invitationMock.Setup(i => i.GetOneByExpression(It.IsAny<Expression<Func<Invitation, bool>>>())).Returns((Invitation)null);
             _roleMock.Setup(role => role.GetOneByExpression(It.IsAny<Expression<Func<Role, bool>>>())).Returns(new Role() { Id = 1, Name = "Employee"});
