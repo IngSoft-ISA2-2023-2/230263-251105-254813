@@ -199,7 +199,6 @@ namespace PharmaGo.Test.BusinessLogic.Test
 
             Assert.AreEqual(result.Pharmacy.Name, invitation.Pharmacy.Name);
             Assert.AreEqual(result.Id, invitationID);
-
         }
 
         [TestMethod]
