@@ -45,5 +45,5 @@ jobs:
       working-directory: Codigo\Frontend\src
     - name: Build
       run: |
-          npm run build -- --prod
+          ng build --configuration=production
       working-directory: Codigo\Frontend\src
