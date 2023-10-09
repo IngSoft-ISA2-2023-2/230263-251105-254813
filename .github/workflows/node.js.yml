@@ -42,6 +42,8 @@ jobs:
       if: steps.cache-nodemodules.outputs.cache-hit != 'true'
       run: |
           npm ci
+      working-directory: Codigo\Frontend\src
     - name: Build
       run: |
           npm run build -- --prod
+      working-directory: Codigo\Frontend\src
