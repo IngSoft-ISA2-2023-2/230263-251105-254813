@@ -1,6 +1,7 @@
+using PharmaGo.BusinessLogic;
 using PharmaGo.Domain.Entities;
 using PharmaGo.WebApi.Controllers;
-using PharmaGo.Domain.Entities;
+
 using System;
 using TechTalk.SpecFlow;
 
@@ -10,12 +11,17 @@ namespace SpecFlowProject.spec.StepDefinitions
     [Binding]
     public class AgregarProductoStepDefinitions
     {
-        private readonly Product _product = new Product();
+        private readonly ProductManager _productManager = new ProductManager();
 
         [Given(@"que ingreso ""([^""]*)"", ""([^""]*)"", ""([^""]*)"" y ""([^""]*)"" correctamente")]
-        public void GivenQueIngresoYCorrectamente(string codigo, string nombre, string descripcion, string precio)
+        public void GivenQueIngresoYCorrectamente(int codigo, string nombre, string descripcion, float precio)
         {
-            throw new PendingStepException();
+            Product product = new Product();
+            product.Code = codigo;
+            product.Name = nombre;
+            product.Description = descripcion;
+            product.Prize = precio;
+            _productManager.CreateProduct(product);
         }
 
         [Given(@"deseo dar de alta un producto")]
