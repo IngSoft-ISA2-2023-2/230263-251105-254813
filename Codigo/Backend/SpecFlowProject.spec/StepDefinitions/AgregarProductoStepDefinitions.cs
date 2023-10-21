@@ -21,14 +21,16 @@ namespace SpecFlowProject.spec.StepDefinitions
             product.Name = nombre;
             product.Description = descripcion;
             product.Prize = precio;
-            _productManager.CreateProduct(product);
+            GivenDeseoDarDeAltaUn(product);
         }
 
-        [Given(@"deseo dar de alta un producto")]
-        public void GivenDeseoDarDeAltaUnProducto()
+        [Given(@"deseo dar de alta un ""([^""]*)""")]
+        public void GivenDeseoDarDeAltaUn(Product producto)
         {
-            throw new PendingStepException();
+            _productManager.CreateProduct(producto);
         }
+
+
 
         [When(@"hago click en el botón agregar")]
         public void WhenHagoClickEnElBotonAgregar()
