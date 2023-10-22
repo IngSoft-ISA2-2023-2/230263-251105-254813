@@ -230,12 +230,9 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Given("que ingreso \"codigo\", \"nombre\", \"descripcion\" y \"precio\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 27
- testRunner.And("ingreso \"codigo\", \"nombre\" y \"precio\" correctamente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 28
  testRunner.When("hago click en el botón agregar", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 29
+#line 28
  testRunner.Then("salta un mensaje de error el producto no se agrega a la lista", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

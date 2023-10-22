@@ -1,8 +1,10 @@
+using NUnit.Framework;
 using PharmaGo.BusinessLogic;
 using PharmaGo.Domain.Entities;
 using PharmaGo.IBusinessLogic;
 using PharmaGo.WebApi.Controllers;
 using PharmaGo.WebApi.Models.In;
+using PharmaGo.WebApi.Models.Out;
 using System;
 using TechTalk.SpecFlow;
 
@@ -13,9 +15,11 @@ namespace SpecFlowProject.spec.StepDefinitions
     public class AgregarProductoStepDefinitions
     {
         private readonly IProductManager _productManager;
-        private readonly Product _producto = new Product();
+        private readonly Product _product = new Product();
+        private readonly ProductModelResponse _result;
         private ProductController _productController;
         private int _resultScenarioOne = 1;
+        private Exception _exception;
 
         public AgregarProductoStepDefinitions(IProductManager manager, ProductController controller)
         {
@@ -23,67 +27,85 @@ namespace SpecFlowProject.spec.StepDefinitions
             _productController = controller;
         }
 
-        //Escenario 1
-        [Given(@"Ingreso de ""([^""]*)"", ""([^""]*)"", ""([^""]*)"" y ""([^""]*)"" correctamente")]
-        public void GivenQueEstoyLogueadoComoEmpleadoIngresoYCorrectamente(int codigo, string nombre, string descripcion, decimal precio)
+        [Given(@"que ingreso ""([^""]*)"", ""([^""]*)"", ""([^""]*)"" y ""([^""]*)""")]
+        public void GivenQueIngresoY(int codigo, string nombre, string descripcion, decimal precio)
         {
-            _producto.Code = codigo;
-            _producto.Name = nombre;
-            _producto.Description = descripcion;
-            _producto.Price = precio;
-        }
-
-        [Given(@"deseo dar de alta un ""([^""]*)"", como ""([^""]*)""""")]
-        public void GivenDeseoDarDeAltaUnComo(Product producto, string empleado)
-        {
-            _productManager.CreateProduct(producto, empleado);
+            _product.Code = codigo;
+            _product.Name = nombre;
+            _product.Description = descripcion;
+            _product.Price = precio;
         }
 
         [When(@"hago click en el botón agregar")]
         public void WhenHagoClickEnElBotonAgregar()
         {
-            //El boton deberia llamar al controlador de creacion del producto?
-            ProductModel productModel = new ProductModel();
-            _productController.PostProduct(productModel);
+            try
+            {
+                ProductModel productModel = new ProductModel();
+                productModel.Name = _product.Name;
+                productModel.Description = _product.Description;
+                productModel.Code = _product.Code;
+                productModel.Prize = _product.Price;
+                _productController.PostProduct(productModel);
+            }
+            catch (Exception ex)
+            {
+                _exception = ex;
+            }
         }
 
         [Then(@"el producto se agrega a la lista de productos")]
         public void ThenElProductoSeAgregaALaListaDeProductos()
         {
-            Product product = new Product();
-            string tokenEmployee = string.Empty;
-            _productManager.CreateProduct(product, tokenEmployee);
-            //_resultScenarioOne.Should().Be(_productManager.Products.Count);
-            _resultScenarioOne.Should().Be(0);
+            if (_exception == null)
+            {
+                Assert.IsTrue(true);
+            }
+            else
+            {
+                Assert.Fail();
+            }
         }
 
-        //Escenario 2
-
-        [Given(@"Dado que ingreso ""([^""]*)"" e ingreso ""([^""]*)"", ""([^""]*)"" y ""([^""]*)"" correctamente")]
-        public void GivenDadoQueIngresoEIngresoYCorrectamente(int codigo, string nombre, string descripcion, decimal precio)
+        [Then(@"salta un mensaje de error con codigo invalido y el producto no se agrega a la lista")]
+        public void ThenSaltaUnMensajeDeErrorConCodigoInvalidoYElProductoNoSeAgregaALaLista()
         {
-            _producto.Code = codigo;
-            _producto.Name = nombre;
-            _producto.Description = descripcion;
-            _producto.Price = precio;
+            if (_exception != null)
+            {
+                Assert.Equals(_exception.Message, "El código del producto debe ser númerico de 5 dígitos");
+            }
+            else
+            {
+                Assert.Fail();
+            }
         }
 
-
-        [Then(@"salta un mensaje de error")]
-        public void ThenSaltaUnMensajeDeError()
+        [Then(@"salta un mensaje de error con nombre invalido y el producto no se agrega a la lista")]
+        public void ThenSaltaUnMensajeDeErrorConNombreInvalidoYElProductoNoSeAgregaALaLista()
         {
-            throw new PendingStepException();
+            if (_exception != null)
+            {
+                Assert.Equals(_exception.Message, "El nombre del procuto debe ser de 30 caracteres");
+            }
+            else
+            {
+                Assert.Fail();
+            }
         }
 
-        [Then(@"el producto no se agrega a la lista")]
-        public void ThenElProductoNoSeAgregaALaLista()
+        [Then(@"salta un mensaje de error con descripcion invalida y el producto no se agrega a la lista")]
+        public void ThenSaltaUnMensajeDeErrorConDescripcionInvalidaYElProductoNoSeAgregaALaLista()
         {
-            Product product = new Product();
-            string tokenEmployee = string.Empty;
-            _productManager.CreateProduct(product, tokenEmployee);
-            //_resultScenarioOne.Should().Be(_productManager.Products.Count);
-            _resultScenarioOne.Should().Be(0);
+            if (_exception != null)
+            {
+                Assert.Equals(_exception.Message, "La descripción de un producto no puede ser vacía ni con más de 70 caracteres");
+            }
+            else
+            {
+                Assert.Fail();
+            }
         }
+
 
 
     }
