@@ -23,6 +23,7 @@ namespace SpecFlowProject.spec.StepDefinitions
             _productController = controller;
         }
 
+        //Escenario 1
         [Given(@"Ingreso de ""([^""]*)"", ""([^""]*)"", ""([^""]*)"" y ""([^""]*)"" correctamente")]
         public void GivenQueEstoyLogueadoComoEmpleadoIngresoYCorrectamente(int codigo, string nombre, string descripcion, decimal precio)
         {
@@ -55,6 +56,34 @@ namespace SpecFlowProject.spec.StepDefinitions
             //_resultScenarioOne.Should().Be(_productManager.Products.Count);
             _resultScenarioOne.Should().Be(0);
         }
+
+        //Escenario 2
+
+        [Given(@"Dado que ingreso ""([^""]*)"" de (.*) digitos e ingreso ""([^""]*)"", ""([^""]*)"" y ""([^""]*)"" correctamente")]
+        public void GivenDadoQueIngresoDeDigitos(int codigo, string nombre, string descripcion, decimal precio)
+        {
+            _producto.Code = codigo;
+            _producto.Name = nombre;
+            _producto.Description = descripcion;
+            _producto.Price = precio;
+        }
+
+        [Then(@"salta un mensaje de error")]
+        public void ThenSaltaUnMensajeDeError()
+        {
+            throw new PendingStepException();
+        }
+
+        [Then(@"el producto no se agrega a la lista")]
+        public void ThenElProductoNoSeAgregaALaLista()
+        {
+            Product product = new Product();
+            string tokenEmployee = string.Empty;
+            _productManager.CreateProduct(product, tokenEmployee);
+            //_resultScenarioOne.Should().Be(_productManager.Products.Count);
+            _resultScenarioOne.Should().Be(0);
+        }
+
 
     }
 }

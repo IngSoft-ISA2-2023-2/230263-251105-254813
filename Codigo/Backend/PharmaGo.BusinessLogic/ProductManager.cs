@@ -36,6 +36,13 @@ namespace PharmaGo.BusinessLogic
 
         public Product CreateProduct(Product product, string empleado)
         {
+            //Controlar product not null
+            if (product == null)
+            {
+                throw new ResourceNotFoundException("Please create a product before inserting it.");
+            }
+            product.ValidProduct();
+
             string token = empleado;
             var guidToken = new Guid(token);
             Session session = _sessionRepository.GetOneByExpression(s => s.Token == guidToken);
@@ -46,6 +53,11 @@ namespace PharmaGo.BusinessLogic
             if (pharmacyOfDrug == null)
             {
                 throw new ResourceNotFoundException("The pharmacy of the drug does not exist.");
+            }
+
+            if (_productRepository.Exists(d => d.Code == product.Code))
+            {
+                throw new InvalidResourceException("The code product already exists in that pharmacy.");
             }
 
             if (product != null && product.Pharmacy != null)
