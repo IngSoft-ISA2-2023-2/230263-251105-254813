@@ -11,6 +11,7 @@ namespace PharmaGo.DataAccess
         public DbSet<Invitation> Invitations { get; set; }
         public DbSet<Pharmacy> Pharmacys { get; set; }
         public DbSet<Purchase> Purchases { get; set; }
+        public DbSet<Product> Product { get; set; }
         public DbSet<PurchaseDetail> PurchaseDetails { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<StockRequest> StockRequests { get; set; }
@@ -24,6 +25,7 @@ namespace PharmaGo.DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
 
             modelBuilder.Entity<Drug>().Property(property => property.Price).HasPrecision(14, 2);
+            modelBuilder.Entity<Product>().Property(property => property.Price).HasPrecision(14, 2);
             modelBuilder.Entity<Purchase>().Property(property => property.TotalAmount).HasPrecision(14, 2);
             modelBuilder.Entity<PurchaseDetail>().Property(property => property.Price).HasPrecision(14, 2);
 

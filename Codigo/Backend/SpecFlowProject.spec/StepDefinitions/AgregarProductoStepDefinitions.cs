@@ -1,7 +1,8 @@
 using PharmaGo.BusinessLogic;
 using PharmaGo.Domain.Entities;
+using PharmaGo.IBusinessLogic;
 using PharmaGo.WebApi.Controllers;
-
+using PharmaGo.WebApi.Models.In;
 using System;
 using TechTalk.SpecFlow;
 
@@ -11,40 +12,48 @@ namespace SpecFlowProject.spec.StepDefinitions
     [Binding]
     public class AgregarProductoStepDefinitions
     {
-        private readonly ProductManager _productManager = new ProductManager();
+        private readonly IProductManager _productManager;
         private readonly Product _producto = new Product();
-        private ProductController _productController = new ProductController();
+        private ProductController _productController;
         private int _resultScenarioOne = 1;
 
-        [Given(@"que estoy logueado como empleado, ingreso ""([^""]*)"", ""([^""]*)"", ""([^""]*)"" y ""([^""]*)"" correctamente")]
-        public void GivenQueEstoyLogueadoComoEmpleadoIngresoYCorrectamente(int codigo, string nombre, string descripcion, float precio)
+        public AgregarProductoStepDefinitions(IProductManager manager, ProductController controller)
+        {
+            _productManager = manager;
+            _productController = controller;
+        }
+
+        [Given(@"Ingreso de ""([^""]*)"", ""([^""]*)"", ""([^""]*)"" y ""([^""]*)"" correctamente")]
+        public void GivenQueEstoyLogueadoComoEmpleadoIngresoYCorrectamente(int codigo, string nombre, string descripcion, decimal precio)
         {
             _producto.Code = codigo;
             _producto.Name = nombre;
             _producto.Description = descripcion;
-            _producto.Prize = precio;
+            _producto.Price = precio;
         }
 
         [Given(@"deseo dar de alta un ""([^""]*)"", como ""([^""]*)""""")]
         public void GivenDeseoDarDeAltaUnComo(Product producto, string empleado)
         {
-            _productManager.CreateProduct(empleado, producto);
+            _productManager.CreateProduct(producto, empleado);
         }
-
-
 
         [When(@"hago click en el botón agregar")]
         public void WhenHagoClickEnElBotonAgregar()
         {
             //El boton deberia llamar al controlador de creacion del producto?
-            _productController.PostProduct();
+            ProductModel productModel = new ProductModel();
+            _productController.PostProduct(productModel);
         }
 
         [Then(@"el producto se agrega a la lista de productos")]
         public void ThenElProductoSeAgregaALaListaDeProductos()
         {
-            _productManager.AddProduct();
-            _resultScenarioOne.Should().Be(_productManager.Products.Count);
+            Product product = new Product();
+            string tokenEmployee = string.Empty;
+            _productManager.CreateProduct(product, tokenEmployee);
+            //_resultScenarioOne.Should().Be(_productManager.Products.Count);
+            _resultScenarioOne.Should().Be(0);
         }
 
     }

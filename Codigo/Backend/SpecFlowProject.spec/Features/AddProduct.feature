@@ -8,6 +8,6 @@ Link to a feature: [Calculator](SpecFlowProject.spec/Features/Calculator.feature
 @mytag
 Scenario: Ingreso de codigo, nombre, descripcion y precio válidos.
 	Given que ingreso "codigo", "nombre", "descripcion" y "precio" correctamente
-	And  deseo dar de alta un "producto", como "empleado""
+	And  deseo dar de alta un "producto", como "empleado"
 	When hago click en el botón agregar
 	Then el producto se agrega a la lista de productos

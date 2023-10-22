@@ -110,7 +110,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Given("que ingreso \"codigo\", \"nombre\", \"descripcion\" y \"precio\" correctamente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 11
- testRunner.And("deseo dar de alta un \"producto\", como \"empleado\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("deseo dar de alta un \"producto\", como \"empleado\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 12
  testRunner.When("hago click en el botón agregar", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
