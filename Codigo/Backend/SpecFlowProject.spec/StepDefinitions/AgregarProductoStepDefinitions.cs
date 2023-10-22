@@ -59,14 +59,15 @@ namespace SpecFlowProject.spec.StepDefinitions
 
         //Escenario 2
 
-        [Given(@"Dado que ingreso ""([^""]*)"" de (.*) digitos e ingreso ""([^""]*)"", ""([^""]*)"" y ""([^""]*)"" correctamente")]
-        public void GivenDadoQueIngresoDeDigitos(int codigo, string nombre, string descripcion, decimal precio)
+        [Given(@"Dado que ingreso ""([^""]*)"" e ingreso ""([^""]*)"", ""([^""]*)"" y ""([^""]*)"" correctamente")]
+        public void GivenDadoQueIngresoEIngresoYCorrectamente(int codigo, string nombre, string descripcion, decimal precio)
         {
             _producto.Code = codigo;
             _producto.Name = nombre;
             _producto.Description = descripcion;
             _producto.Price = precio;
         }
+
 
         [Then(@"salta un mensaje de error")]
         public void ThenSaltaUnMensajeDeError()
