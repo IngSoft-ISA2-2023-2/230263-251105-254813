@@ -10,5 +10,10 @@ namespace PharmaGo.WebApi.Controllers
         {
             return View();
         }
+
+        public void PostProduct()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

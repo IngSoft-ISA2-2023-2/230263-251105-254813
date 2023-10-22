@@ -12,22 +12,23 @@ namespace SpecFlowProject.spec.StepDefinitions
     public class AgregarProductoStepDefinitions
     {
         private readonly ProductManager _productManager = new ProductManager();
+        private readonly Product _producto = new Product();
+        private ProductController _productController = new ProductController();
+        private int _resultScenarioOne = 1;
 
-        [Given(@"que ingreso ""([^""]*)"", ""([^""]*)"", ""([^""]*)"" y ""([^""]*)"" correctamente")]
-        public void GivenQueIngresoYCorrectamente(int codigo, string nombre, string descripcion, float precio)
+        [Given(@"que estoy logueado como empleado, ingreso ""([^""]*)"", ""([^""]*)"", ""([^""]*)"" y ""([^""]*)"" correctamente")]
+        public void GivenQueEstoyLogueadoComoEmpleadoIngresoYCorrectamente(int codigo, string nombre, string descripcion, float precio)
         {
-            Product product = new Product();
-            product.Code = codigo;
-            product.Name = nombre;
-            product.Description = descripcion;
-            product.Prize = precio;
-            GivenDeseoDarDeAltaUn(product);
+            _producto.Code = codigo;
+            _producto.Name = nombre;
+            _producto.Description = descripcion;
+            _producto.Prize = precio;
         }
 
-        [Given(@"deseo dar de alta un ""([^""]*)""")]
-        public void GivenDeseoDarDeAltaUn(Product producto)
+        [Given(@"deseo dar de alta un ""([^""]*)"", como ""([^""]*)""""")]
+        public void GivenDeseoDarDeAltaUnComo(Product producto, string empleado)
         {
-            _productManager.CreateProduct(producto);
+            _productManager.CreateProduct(empleado, producto);
         }
 
 
@@ -35,13 +36,16 @@ namespace SpecFlowProject.spec.StepDefinitions
         [When(@"hago click en el botón agregar")]
         public void WhenHagoClickEnElBotonAgregar()
         {
-            throw new PendingStepException();
+            //El boton deberia llamar al controlador de creacion del producto?
+            _productController.PostProduct();
         }
 
         [Then(@"el producto se agrega a la lista de productos")]
         public void ThenElProductoSeAgregaALaListaDeProductos()
         {
-            throw new PendingStepException();
+            _productManager.AddProduct();
+            _resultScenarioOne.Should().Be(_productManager.Products.Count);
         }
+
     }
 }
