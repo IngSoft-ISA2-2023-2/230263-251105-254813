@@ -9,9 +9,21 @@ using System;
 using TechTalk.SpecFlow;
 using Moq;
 using BoDi;
+using PharmaGo.DataAccess.Repositories;
+using PharmaGo.IDataAccess;
 
 namespace SpecFlowProject.spec.StepDefinitions
 {
+    [Binding]
+    public sealed class RegistrationHooks
+    {
+        [BeforeTestRun]
+        public static void RegisterTestThreadDependencies(TestThreadContext testThreadContext)
+        {
+            testThreadContext.TestThreadContainer.RegisterTypeAs<ProductManager, IProductManager>();
+            testThreadContext.TestThreadContainer.RegisterTypeAs<ProductRepository,IRepository<Product>>();
+        }
+    }
 
     [Binding]
     public class AgregarProductoStepDefinitions
@@ -64,10 +76,10 @@ namespace SpecFlowProject.spec.StepDefinitions
             try
             {
                 // Configura un mock para IProductManager
-                var productManagerMock = new Mock<IProductManager>();
-                productManagerMock.Setup(manager => manager.CreateProduct(It.IsAny<Product>(), It.IsAny<string>()))
-                    .Returns(_product);
-                _productManager = productManagerMock.Object;
+                //var productManagerMock = new Mock<IProductManager>();
+                //productManagerMock.Setup(manager => manager.CreateProduct(It.IsAny<Product>(), It.IsAny<string>()))
+                //    .Returns(_product);
+                //_productManager = productManagerMock.Object;
 
                 // Continúa con la lógica de tu prueba
                 ProductModel productModel = new ProductModel
@@ -77,7 +89,7 @@ namespace SpecFlowProject.spec.StepDefinitions
                     Code = _product.Code,
                     Prize = _product.Price
                 };
-                _productController = new ProductController(_productManager);
+                _productController = new ProductController();
                 _productController.PostProduct(productModel);
             }
             catch (Exception ex)
