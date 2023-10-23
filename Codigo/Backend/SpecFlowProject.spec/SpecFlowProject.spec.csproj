@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
     <PackageReference Include="SpecFlow.Plus.LivingDocPlugin" Version="3.9.57" />
     <PackageReference Include="SpecFlow.NUnit" Version="3.9.40" />
     <PackageReference Include="nunit" Version="3.13.2" />
@@ -21,14 +21,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ExportationModel\ExportationModel.csproj" />
+    <ProjectReference Include="..\JSONExporter\JSONExporter.csproj" />
     <ProjectReference Include="..\PharmaGo.BusinessLogic\PharmaGo.BusinessLogic.csproj" />
     <ProjectReference Include="..\PharmaGo.DataAccess\PharmaGo.DataAccess.csproj" />
     <ProjectReference Include="..\PharmaGo.Domain\PharmaGo.Domain.csproj" />
     <ProjectReference Include="..\PharmaGo.Exceptions\PharmaGo.Exceptions.csproj" />
     <ProjectReference Include="..\PharmaGo.Factory\PharmaGo.Factory.csproj" />
-    <ProjectReference Include="..\PharmaGo.IBusinessLogic\PharmaGo.IBusinessLogic.csproj" />
-    <ProjectReference Include="..\PharmaGo.IDataAccess\PharmaGo.IDataAccess.csproj" />
     <ProjectReference Include="..\PharmaGo.WebApi\PharmaGo.WebApi.csproj" />
+    <ProjectReference Include="..\PharnaGo.Test\PharmaGo.Test.csproj" />
   </ItemGroup>
 
 </Project>

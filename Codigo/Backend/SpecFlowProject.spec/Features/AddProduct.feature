@@ -12,4 +12,6 @@ Scenario: Ingreso de codigo, nombre, descripcion y precio válidos.
 	And ingreso descripcion is "Limpia el pelo"
 	And ingreso precio is 20.00
 	When hago click en el botón agregar
-	Then muestra el mensaje is Agregado
+	Then muestra el mensaje Agregado
+
+

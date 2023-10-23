@@ -122,7 +122,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("hago click en el botón agregar", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 15
- testRunner.Then("muestra el mensaje is Agregado", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("muestra el mensaje Agregado", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

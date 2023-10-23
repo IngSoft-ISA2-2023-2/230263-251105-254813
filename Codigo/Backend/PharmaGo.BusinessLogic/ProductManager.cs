@@ -29,11 +29,6 @@ namespace PharmaGo.BusinessLogic
             _pharmacyRepository = pharmacyRepository;
         }
 
-        public void AddProduct()
-        {
-            throw new NotImplementedException();
-        }
-
         public Product CreateProduct(Product product, string empleado)
         {
             //Controlar product not null

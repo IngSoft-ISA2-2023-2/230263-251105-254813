@@ -7,6 +7,7 @@ using PharmaGo.DataAccess.Repositories;
 using PharmaGo.Domain.Entities;
 using PharmaGo.IBusinessLogic;
 using PharmaGo.IDataAccess;
+using System.Configuration;
 
 namespace PharmaGo.Factory
 {
