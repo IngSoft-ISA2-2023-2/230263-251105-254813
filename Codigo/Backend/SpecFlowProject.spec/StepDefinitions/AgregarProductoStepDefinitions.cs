@@ -22,6 +22,7 @@ namespace SpecFlowProject.spec.StepDefinitions
         {
             testThreadContext.TestThreadContainer.RegisterTypeAs<ProductManager, IProductManager>();
             testThreadContext.TestThreadContainer.RegisterTypeAs<ProductRepository,IRepository<Product>>();
+
         }
     }
 
@@ -31,17 +32,19 @@ namespace SpecFlowProject.spec.StepDefinitions
 
         //private readonly IProductManager _productManager;
         private readonly IProductManager _productManager;
+        private readonly IRepository<Product> _repository;
         private readonly Product _product = new Product();
         private readonly ProductModelResponse _result;
         private ProductController _productController;
         private int _resultScenarioOne = 1;
         private Exception _exception;
 
-        public AgregarProductoStepDefinitions(IProductManager productManager, ProductController controller)
+        public AgregarProductoStepDefinitions(IProductManager productManager, IRepository<Product> repository, ProductController controller)
         {
 
             _productManager = SpecFlowContextUtils.GetProductManager();
             _productController = controller;
+            _repository = repository;
         }
 
 
