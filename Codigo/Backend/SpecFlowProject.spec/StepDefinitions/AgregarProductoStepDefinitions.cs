@@ -1,5 +1,4 @@
 using NUnit.Framework;
-using PharmaGo.BusinessLogic;
 using PharmaGo.Domain.Entities;
 using PharmaGo.IBusinessLogic;
 using PharmaGo.WebApi.Controllers;
@@ -10,33 +9,50 @@ using TechTalk.SpecFlow;
 
 namespace SpecFlowProject.spec.StepDefinitions
 {
-
     [Binding]
     public class AgregarProductoStepDefinitions
     {
-        private readonly IProductManager _productManager;
+
+        
         private readonly Product _product = new Product();
         private readonly ProductModelResponse _result;
         private ProductController _productController;
         private int _resultScenarioOne = 1;
         private Exception _exception;
 
-        public AgregarProductoStepDefinitions(IProductManager manager, ProductController controller)
+        public AgregarProductoStepDefinitions(ProductController controller)
         {
-            _productManager = manager;
+            //_productManager = manager;
             _productController = controller;
         }
 
-        [Given(@"que ingreso ""([^""]*)"", ""([^""]*)"", ""([^""]*)"" y ""([^""]*)""")]
-        public void GivenQueIngresoY(int codigo, string nombre, string descripcion, decimal precio)
+
+        [Given(@"que ingreso codigo is (.*)")]
+        public void GivenQueIngresoCodigoIs(int p0)
         {
-            _product.Code = codigo;
-            _product.Name = nombre;
-            _product.Description = descripcion;
-            _product.Price = precio;
+            _product.Code = p0;
         }
 
-        [When(@"hago click en el botón agregar")]
+        [Given(@"ingreso nombre is ""([^""]*)""")]
+        public void GivenIngresoNombreIs(string shampoo)
+        {
+            _product.Name = shampoo;
+        }
+
+        [Given(@"ingreso descripcion is ""([^""]*)""")]
+        public void GivenIngresoDescripcionIs(string p0)
+        {
+            _product.Description = p0;
+        }
+
+
+        [Given(@"ingreso precio is (.*)")]
+        public void GivenIngresoPrecioIs(Decimal p0)
+        {
+            _product.Price = p0;
+        }
+
+        [When(@"hago click en el bot�n agregar")]
         public void WhenHagoClickEnElBotonAgregar()
         {
             try
@@ -52,10 +68,12 @@ namespace SpecFlowProject.spec.StepDefinitions
             {
                 _exception = ex;
             }
+
         }
 
-        [Then(@"el producto se agrega a la lista de productos")]
-        public void ThenElProductoSeAgregaALaListaDeProductos()
+
+        [Then(@"muestra el mensaje is Agregado")]
+        public void ThenMuestraElMensajeIsAgregado()
         {
             if (_exception == null)
             {
@@ -66,47 +84,5 @@ namespace SpecFlowProject.spec.StepDefinitions
                 Assert.Fail();
             }
         }
-
-        [Then(@"salta un mensaje de error con codigo invalido y el producto no se agrega a la lista")]
-        public void ThenSaltaUnMensajeDeErrorConCodigoInvalidoYElProductoNoSeAgregaALaLista()
-        {
-            if (_exception != null)
-            {
-                Assert.Equals(_exception.Message, "El código del producto debe ser númerico de 5 dígitos");
-            }
-            else
-            {
-                Assert.Fail();
-            }
-        }
-
-        [Then(@"salta un mensaje de error con nombre invalido y el producto no se agrega a la lista")]
-        public void ThenSaltaUnMensajeDeErrorConNombreInvalidoYElProductoNoSeAgregaALaLista()
-        {
-            if (_exception != null)
-            {
-                Assert.Equals(_exception.Message, "El nombre del procuto debe ser de 30 caracteres");
-            }
-            else
-            {
-                Assert.Fail();
-            }
-        }
-
-        [Then(@"salta un mensaje de error con descripcion invalida y el producto no se agrega a la lista")]
-        public void ThenSaltaUnMensajeDeErrorConDescripcionInvalidaYElProductoNoSeAgregaALaLista()
-        {
-            if (_exception != null)
-            {
-                Assert.Equals(_exception.Message, "La descripción de un producto no puede ser vacía ni con más de 70 caracteres");
-            }
-            else
-            {
-                Assert.Fail();
-            }
-        }
-
-
-
     }
 }

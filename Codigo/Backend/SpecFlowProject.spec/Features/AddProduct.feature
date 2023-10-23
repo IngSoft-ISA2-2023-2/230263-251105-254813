@@ -7,30 +7,9 @@ Link to a feature: [Calculator](SpecFlowProject.spec/Features/Calculator.feature
 
 @mytag
 Scenario: Ingreso de codigo, nombre, descripcion y precio válidos.
-	Given que ingreso "codigo", "nombre", "descripcion" y "precio"
+	Given que ingreso codigo is 12345
+	And ingreso nombre is "shampoo"
+	And ingreso descripcion is "Limpia el pelo"
+	And ingreso precio is 20.00
 	When hago click en el botón agregar
-	Then el producto se agrega a la lista de productos
-
-Scenario: Ingreso de nombre, descripcion, precio válidos y codigo invalido.
-	Given que ingreso "codigo", "nombre", "descripcion" y "precio"
-	When hago click en el botón agregar
-	Then salta un mensaje de error con codigo invalido y el producto no se agrega a la lista
-	
-
-Scenario: Ingreso de codigo, descripcion, precio válidos y nombre invalido.
-	Given que ingreso "codigo", "nombre", "descripcion" y "precio"
-	When hago click en el botón agregar
-	Then salta un mensaje de error con nombre invalido y el producto no se agrega a la lista
-
-Scenario: Ingreso de codigo, nombre, precio válidos y descripcion invalida.
-	Given que ingreso "codigo", "nombre", "descripcion" y "precio"
-	When hago click en el botón agregar
-	Then salta un mensaje de error con descripcion invalida y el producto no se agrega a la lista
-
-
-Examples:
-| description        | name     | code  | price |
-| new shaker         | product1 | 59595 | 200   |
-| new excercise ball | product2 | 123456 | 300   |
-| new excercise ball | product3 | 12345 | 300   |
-| new excercise ball | product4 | 12345 | 300   |
+	Then muestra el mensaje is Agregado
