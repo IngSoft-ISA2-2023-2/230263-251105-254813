@@ -1,112 +1,134 @@
-using NUnit.Framework;
-using PharmaGo.Domain.Entities;
-using PharmaGo.IBusinessLogic;
-using PharmaGo.BusinessLogic;
-using PharmaGo.WebApi.Controllers;
-using PharmaGo.WebApi.Models.In;
-using PharmaGo.WebApi.Models.Out;
-using System;
-using TechTalk.SpecFlow;
-using Moq;
-using BoDi;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using PharmaGo.DataAccess.Repositories;
-using PharmaGo.IDataAccess;
+using PharmaGo.Domain.Entities;
+using PharmaGo.WebApi.Models.In;
+using System;
+using System.Net;
+using System.Text;
+using TechTalk.SpecFlow;
+using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace SpecFlowProject.spec.StepDefinitions
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using TechTalk.SpecFlow;
+
+
+
+
+namespace SpecFlowPharmaGo.WebApi.StepDefinitions
 {
     [Binding]
-    public sealed class RegistrationHooks
-    {
-        [BeforeTestRun]
-        public static void RegisterTestThreadDependencies(TestThreadContext testThreadContext)
-        {
-            testThreadContext.TestThreadContainer.RegisterTypeAs<ProductManager, IProductManager>();
-            testThreadContext.TestThreadContainer.RegisterTypeAs<ProductRepository,IRepository<Product>>();
-
-        }
-    }
-
-    [Binding]
-    public class AgregarProductoStepDefinitions
+    public class InsertProductStepDefinitions
     {
 
-        //private readonly IProductManager _productManager;
-        private readonly IProductManager _productManager;
-        private readonly IRepository<Product> _repository;
+
+
+        private readonly ScenarioContext context;
         private readonly Product _product = new Product();
-        private readonly ProductModelResponse _result;
-        private ProductController _productController;
-        private int _resultScenarioOne = 1;
-        private Exception _exception;
-
-        public AgregarProductoStepDefinitions(IProductManager productManager, IRepository<Product> repository, ProductController controller)
+        private readonly ProductModel _productModel = new ProductModel();
+        public InsertProductStepDefinitions(ScenarioContext context)
         {
-
-            _productManager = SpecFlowContextUtils.GetProductManager();
-            _productController = controller;
-            _repository = repository;
+            this.context = context;
         }
 
 
-        [Given(@"que ingreso codigo is (.*)")]
-        public void GivenQueIngresoCodigoIs(int p0)
-        {
-            _product.Code = p0;
-        }
 
-        [Given(@"ingreso nombre is ""([^""]*)""")]
-        public void GivenIngresoNombreIs(string shampoo)
+        [Given(@"the name product(.*) of the product")]
+        public void GivenTheNameProductOfTheProduct(string name)
         {
-            _product.Name = shampoo;
-        }
-
-        [Given(@"ingreso descripcion is ""([^""]*)""")]
-        public void GivenIngresoDescripcionIs(string p0)
-        {
-            _product.Description = p0;
+            _product.Name = name;
+            _productModel.Name = name;
         }
 
 
-        [Given(@"ingreso precio is (.*)")]
-        public void GivenIngresoPrecioIs(Decimal p0)
+
+        [Given(@"the description(.*) of the product")]
+        public void GivenTheDescriptionNewExcerciseBallOfTheProduct(string description)
         {
-            _product.Price = p0;
+            _product.Description = description;
+            _productModel.Description = description;
         }
 
-        [When(@"hago click en el botón agregar")]
-        public void WhenHagoClickEnElBotonAgregar(IProductManager _productManager)
+
+
+
+
+        [Given(@"the code (.*) of the product")]
+        public void GivenTheCodeOfTheProduct(int code)
         {
+            _product.Code = code;
+            _productModel.Code = code;
+        }
+
+
+
+        [Given(@"the price (.*) of the product")]
+        public void GivenThePriceOfTheProduct(decimal price)
+        {
+            _product.Price = price;
+            _productModel.Prize = price;
+        }
+
+
+
+        [When(@"a user wants to add it to the system")]
+        public async Task WhenAUserWantsToAddItToTheSystemAsync()
+        {
+            HttpClientHandler clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+            var client = new HttpClient(clientHandler);
+            client.DefaultRequestHeaders.Add("Authorization", "e9e0e1e9-3812-4eb5-949e-ae92ac931401");
+
+
+
+            for (var i = 0; i < 20; i++)
+            {
+                var request1 = new HttpRequestMessage(HttpMethod.Delete, $"https://localhost:7186/api/products/{i}");
+                var response1 = await client.SendAsync(request1).ConfigureAwait(false);
+
+
+
+            }
+            string requestBody = JsonConvert.SerializeObject(_productModel);
+
+
+
+            var request = new HttpRequestMessage(HttpMethod.Post, $"https://localhost:7186/api/products");
+
+
+
+            request.Content = new StringContent(requestBody, Encoding.UTF8, "application/json");
+
+
+
+            var response = await client.SendAsync(request).ConfigureAwait(false);
+
+
+
             try
             {
-                // Configura un mock para IProductManager
-                //var productManagerMock = new Mock<IProductManager>();
-                //productManagerMock.Setup(manager => manager.CreateProduct(It.IsAny<Product>(), It.IsAny<string>()))
-                //    .Returns(_product);
-                //_productManager = productManagerMock.Object;
-
-                // Continúa con la lógica de tu prueba
-                ProductModel productModel = new ProductModel
-                {
-                    Name = _product.Name,
-                    Description = _product.Description,
-                    Code = _product.Code,
-                    Prize = _product.Price
-                };
-                _productController = new ProductController();
-                _productController.PostProduct(productModel);
+                context.Set(response.StatusCode, "ResponseStatusCode");
             }
-            catch (Exception ex)
+            finally
             {
-                _exception = ex;
             }
-
         }
 
-        [Then(@"muestra el mensaje Agregado")]
-        public void ThenMuestraElMensajeAgregado()
+
+
+        [Then(@"add the product to the user´s pharmacy and return the  product model")]
+        public void ThenAddTheProductToTheUserSPharmacyAndReturnTheProductModel()
         {
-            Assert.IsTrue(true);
+            Assert.AreEqual(200, (int)context.Get<HttpStatusCode>("ResponseStatusCode"));
         }
+
+
+
+
+
 
     }
 }
