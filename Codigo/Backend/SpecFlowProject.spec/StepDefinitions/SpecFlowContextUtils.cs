@@ -16,7 +16,7 @@ namespace SpecFlowProject.spec.StepDefinitions
     public static class SpecFlowContextUtils
     {
         private const string ProductManagerKey = "ProductManager";
-
+        private const string ProductRepositoryKey = "RepositoryKey";
         public static IProductManager GetProductManager()
         {
             if (!ScenarioContext.Current.ContainsKey(ProductManagerKey))
@@ -28,6 +28,7 @@ namespace SpecFlowProject.spec.StepDefinitions
             }
             return (IProductManager)ScenarioContext.Current[ProductManagerKey];
         }
+<<<<<<< HEAD
 
         public static IRepository<T> GetMockedRepository<T>() where T : class
         {
@@ -62,6 +63,23 @@ namespace SpecFlowProject.spec.StepDefinitions
                 .Returns((int id) => new List<Session>().FirstOrDefault(e => e.Id == id));
             var sessionRepository = new SessionRepository(dbContextMock.Object);
             return sessionRepository;
+=======
+        public static IRepository<Product> GetRepository()
+        {
+            if (!ScenarioContext.Current.ContainsKey(ProductRepositoryKey))
+            {
+   
+                // Ejemplo de configuración de un Mock:
+                var repositoryMock = new Mock<IRepository<Product>>();
+                repositoryMock.Setup(repo => repo.GetOneByExpression(It.Is<Expression<Func<Product, bool>>>(expression => true)))
+                             .Returns(new Product { Id = 1, Name = "Shampoo" });
+
+                ScenarioContext.Current.Add(ProductRepositoryKey, repositoryMock.Object);
+            }
+
+            return (IRepository<Product>)ScenarioContext.Current[ProductRepositoryKey];
+        
+>>>>>>> main
         }
     }
 }

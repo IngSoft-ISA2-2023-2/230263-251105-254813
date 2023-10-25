@@ -1,24 +1,35 @@
-using NUnit.Framework;
-using PharmaGo.Domain.Entities;
-using PharmaGo.IBusinessLogic;
-using PharmaGo.BusinessLogic;
-using PharmaGo.WebApi.Controllers;
-using PharmaGo.WebApi.Models.In;
-using PharmaGo.WebApi.Models.Out;
-using System;
-using TechTalk.SpecFlow;
-using Moq;
-using BoDi;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using PharmaGo.DataAccess.Repositories;
+<<<<<<< HEAD
 using PharmaGo.IDataAccess;
 using PharmaGo.DataAccess;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using System.Drawing;
+=======
+using PharmaGo.Domain.Entities;
+using PharmaGo.WebApi.Models.In;
+using System;
+using System.Net;
+using System.Text;
+using TechTalk.SpecFlow;
+using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+>>>>>>> main
 
-namespace SpecFlowProject.spec.StepDefinitions
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using TechTalk.SpecFlow;
+
+
+
+
+namespace SpecFlowPharmaGo.WebApi.StepDefinitions
 {
     [Binding]
+<<<<<<< HEAD
     public sealed class RegistrationHooks
     {
         [BeforeTestRun]
@@ -52,49 +63,108 @@ namespace SpecFlowProject.spec.StepDefinitions
     public class AgregarProductoStepDefinitions
     {
         private readonly IProductManager _productManager;
-        private readonly Product _product = new Product();
-        private readonly ProductModelResponse _result;
-        private ProductController _productController;
-        private int _resultScenarioOne = 1;
-        private Exception _exception;
+=======
+    public class InsertProductStepDefinitions
+    {
 
-        public AgregarProductoStepDefinitions(IProductManager productManager, ProductController controller)
+
+
+        private readonly ScenarioContext context;
+>>>>>>> main
+        private readonly Product _product = new Product();
+        private readonly ProductModel _productModel = new ProductModel();
+        public InsertProductStepDefinitions(ScenarioContext context)
         {
+<<<<<<< HEAD
             _productManager = SpecFlowContextUtils.GetProductManager();
             _productController = controller;
+=======
+            this.context = context;
+>>>>>>> main
         }
 
 
-        [Given(@"que ingreso codigo is (.*)")]
-        public void GivenQueIngresoCodigoIs(int p0)
+
+        [Given(@"the name product(.*) of the product")]
+        public void GivenTheNameProductOfTheProduct(string name)
         {
-            _product.Code = p0;
+            _product.Name = name;
+            _productModel.Name = name;
         }
 
-        [Given(@"ingreso nombre is ""([^""]*)""")]
-        public void GivenIngresoNombreIs(string shampoo)
+
+
+        [Given(@"the description(.*) of the product")]
+        public void GivenTheDescriptionNewExcerciseBallOfTheProduct(string description)
         {
-            _product.Name = shampoo;
+            _product.Description = description;
+            _productModel.Description = description;
         }
 
-        [Given(@"ingreso descripcion is ""([^""]*)""")]
-        public void GivenIngresoDescripcionIs(string p0)
-        {
-            _product.Description = p0;
-        }
-
-
-        [Given(@"ingreso precio is (.*)")]
-        public void GivenIngresoPrecioIs(Decimal p0)
-        {
-            _product.Price = p0;
-        }
-
+<<<<<<< HEAD
         [When(@"hago click en el botón agregar")]
         public void WhenHagoClickEnElBotonAgregar()
+=======
+
+
+
+
+        [Given(@"the code (.*) of the product")]
+        public void GivenTheCodeOfTheProduct(int code)
+>>>>>>> main
         {
+            _product.Code = code;
+            _productModel.Code = code;
+        }
+
+
+
+        [Given(@"the price (.*) of the product")]
+        public void GivenThePriceOfTheProduct(decimal price)
+        {
+            _product.Price = price;
+            _productModel.Prize = price;
+        }
+
+
+
+        [When(@"a user wants to add it to the system")]
+        public async Task WhenAUserWantsToAddItToTheSystemAsync()
+        {
+            HttpClientHandler clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+            var client = new HttpClient(clientHandler);
+            client.DefaultRequestHeaders.Add("Authorization", "e9e0e1e9-3812-4eb5-949e-ae92ac931401");
+
+
+
+            for (var i = 0; i < 20; i++)
+            {
+                var request1 = new HttpRequestMessage(HttpMethod.Delete, $"https://localhost:7186/api/products/{i}");
+                var response1 = await client.SendAsync(request1).ConfigureAwait(false);
+
+
+
+            }
+            string requestBody = JsonConvert.SerializeObject(_productModel);
+
+
+
+            var request = new HttpRequestMessage(HttpMethod.Post, $"https://localhost:7186/api/products");
+
+
+
+            request.Content = new StringContent(requestBody, Encoding.UTF8, "application/json");
+
+
+
+            var response = await client.SendAsync(request).ConfigureAwait(false);
+
+
+
             try
             {
+<<<<<<< HEAD
                 ProductModel productModel = new ProductModel
                 {
                     Name = _product.Name,
@@ -103,18 +173,27 @@ namespace SpecFlowProject.spec.StepDefinitions
                     Prize = _product.Price
                 };
                 _productController.PostProduct(productModel);
+=======
+                context.Set(response.StatusCode, "ResponseStatusCode");
+>>>>>>> main
             }
-            catch (Exception ex)
+            finally
             {
-                _exception = ex;
             }
         }
 
-        [Then(@"muestra el mensaje Agregado")]
-        public void ThenMuestraElMensajeAgregado()
+
+
+        [Then(@"add the product to the user´s pharmacy and return the  product model")]
+        public void ThenAddTheProductToTheUserSPharmacyAndReturnTheProductModel()
         {
-            Assert.IsTrue(true);
+            Assert.AreEqual(200, (int)context.Get<HttpStatusCode>("ResponseStatusCode"));
         }
+
+
+
+
+
 
     }
 }

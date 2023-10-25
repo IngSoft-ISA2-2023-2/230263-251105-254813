@@ -1,17 +1,20 @@
-﻿Feature: AgregarProducto
-![Calculator](https://specflow.org/wp-content/uploads/2020/09/calculator.png)
-Simple calculator for adding **two** numbers
+﻿Feature: InsertProduct
 
-Link to a feature: [Calculator](SpecFlowProject.spec/Features/Calculator.feature)
-***Further read***: **[Learn more about how to generate Living Documentation](https://docs.specflow.org/projects/specflow-livingdoc/en/latest/LivingDocGenerator/Generating-Documentation.html)**
+Narrativa:
+Como empleado de una farmacia y logeado al sistemo
+Quiero agregar un producto a mi farmacia
+Para que quede disponible para la venta
 
 @mytag
-Scenario: Ingreso de codigo, nombre, descripcion y precio válidos.
-	Given que ingreso codigo is 12345
-	And ingreso nombre is "shampoo"
-	And ingreso descripcion is "Limpia el pelo"
-	And ingreso precio is 20.00
-	When hago click en el botón agregar
-	Then muestra el mensaje Agregado
+Scenario: Insert new product correctly
+Given the name <name> of the product
+And the description <description> of the product
+And the code <code> of the product
+And the price <price> of the product
+When a user wants to add it to the system
+Then add the product to the user´s pharmacy and return the  product model
 
-
+Examples:
+| description        | name     | code  | price |
+| new shaker         | product1 | 59595 | 200   |
+| new excercise ball | product2 | 45612 | 300   |
