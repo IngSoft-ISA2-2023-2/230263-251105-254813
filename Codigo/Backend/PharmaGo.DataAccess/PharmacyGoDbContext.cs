@@ -22,6 +22,10 @@ namespace PharmaGo.DataAccess
 
         public PharmacyGoDbContext(DbContextOptions<PharmacyGoDbContext> options) : base(options) { }
 
+        public PharmacyGoDbContext() : base()
+        {
+            // Constructor sin parámetros
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
 
             modelBuilder.Entity<Drug>().Property(property => property.Price).HasPrecision(14, 2);

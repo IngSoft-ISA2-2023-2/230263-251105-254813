@@ -16,18 +16,9 @@ namespace PharmaGo.WebApi.Controllers
     {
         private readonly IProductManager _productManager;
 
-        public ProductController()
-        {
-        }
-
         public ProductController(IProductManager manager)
         {
             _productManager = manager;
-        }
-
-        public IActionResult Index()
-        {
-            return View();
         }
 
         [HttpPost]
