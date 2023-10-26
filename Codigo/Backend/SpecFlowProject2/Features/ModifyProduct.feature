@@ -13,4 +13,4 @@ Scenario: Modificar producto con datos validos
 
 Examples:
 	| codigo | nombre                          | descripcion       | precio |
-	| 24444  | desodorante1                    | Es para el cuerpo2 | 303    |
+	| 23457  | desodorante1                    | Es para el cuerpo2 | 303    |

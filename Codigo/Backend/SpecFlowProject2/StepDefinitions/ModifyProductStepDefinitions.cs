@@ -1,6 +1,10 @@
+using Newtonsoft.Json;
+using NUnit.Framework;
 using PharmaGo.Domain.Entities;
 using PharmaGo.WebApi.Models.In;
 using System;
+using System.Net;
+using System.Text;
 using TechTalk.SpecFlow;
 
 namespace SpecFlowProject2.StepDefinitions
@@ -16,40 +20,59 @@ namespace SpecFlowProject2.StepDefinitions
         {
             this.context = context;
         }
-        [Given(@"ingresamos el nombre desodorante(.*) del producto a modificar")]
-        public void GivenIngresamosElNombreDesodoranteDelProductoAModificar(string nombre)
+        [Given(@"ingresamos el nombre (.*) del producto a modificar")]
+        public void GivenIngresamosElNombreDelProductoAModificar(string nombre)
         {
-            throw new PendingStepException();
+            _product.Name = nombre;
+            _productModel.Name = nombre;
         }
 
-        [Given(@"ingresamos la descripcion Es para el cuerpo(.*) del producto a modificar")]
-        public void GivenIngresamosLaDescripcionEsParaElCuerpoDelProductoAModificar(string descripcion)
+        [Given(@"ingresamos la descripcion (.*) del producto a modificar")]
+        public void GivenIngresamosLaDescripcionDelProductoAModificar(string descripcion)
         {
-            throw new PendingStepException();
+            _product.Description = descripcion;
+            _productModel.Description = descripcion;
         }
 
         [Given(@"ingresamos el codigo (.*) del producto a modificar")]
         public void GivenIngresamosElCodigoDelProductoAModificar(int codigo)
         {
-            throw new PendingStepException();
+            _product.Code = codigo;
+            _productModel.Code = codigo;
         }
 
         [Given(@"ingresamos el precio (.*) del producto a modificar")]
         public void GivenIngresamosElPrecioDelProductoAModificar(decimal price)
         {
-            throw new PendingStepException();
+            _product.Price = price;
+            _productModel.Prize = price;
         }
 
         [When(@"hago click en el botón modificar")]
-        public void WhenHagoClickEnElBotonModificar()
+        public async Task WhenHagoClickEnElBotonModificarAsync()
         {
-            throw new PendingStepException();
+            HttpClientHandler cliHandler = new HttpClientHandler();
+            cliHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+            var cli = new HttpClient(cliHandler);
+            cli.DefaultRequestHeaders.Add("Authorization", "E9E0E1E9-3812-4EB5-949E-AE92AC931401");
+            string requestBody = JsonConvert.SerializeObject(_productModel);
+            var request = new HttpRequestMessage(HttpMethod.Put, $"https://localhost:7186/api/product/{1}");
+            request.Content = new StringContent(requestBody, Encoding.UTF8, "application/json");
+            var response = await cli.SendAsync(request).ConfigureAwait(false);
+            try
+            {
+                context.Set(response.StatusCode, "ResponseStatusCode");
+            }
+            catch (Exception ex)
+            {
+                _exception = ex;
+            }
         }
 
         [Then(@"se modifica exitosamente")]
         public void ThenSeModificaExitosamente()
         {
-            throw new PendingStepException();
+            Assert.AreEqual(200, (int)context.Get<HttpStatusCode>("ResponseStatusCode"));
         }
     }
 }

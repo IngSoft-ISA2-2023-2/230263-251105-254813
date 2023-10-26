@@ -76,7 +76,7 @@ namespace SpecFlowProject2.Features
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Modificar producto con datos validos")]
         [NUnit.Framework.CategoryAttribute("tag1")]
-        [NUnit.Framework.TestCaseAttribute("24444", "desodorante1", "Es para el cuerpo2", "303", null)]
+        [NUnit.Framework.TestCaseAttribute("23457", "desodorante1", "Es para el cuerpo2", "303", null)]
         public virtual void ModificarProductoConDatosValidos(string codigo, string nombre, string descripcion, string precio, string[] exampleTags)
         {
             string[] @__tags = new string[] {
