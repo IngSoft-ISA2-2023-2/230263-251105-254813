@@ -62,13 +62,11 @@ namespace SpecFlowPharmaGo.WebApi.StepDefinitions
         [When(@"hago click en el botón agregar")]
         public async Task WhenHagoClick()
         {
-            
+
             HttpClientHandler cliHandler = new HttpClientHandler();
             cliHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
             var cli = new HttpClient(cliHandler);
             cli.DefaultRequestHeaders.Add("Authorization", "E9E0E1E9-3812-4EB5-949E-AE92AC931401");
-            var req = new HttpRequestMessage(HttpMethod.Delete, $"https://localhost:7186/api/product/{1}");
-            var res = await cli.SendAsync(req).ConfigureAwait(false);
             string requestBody = JsonConvert.SerializeObject(_productModel);
             var request = new HttpRequestMessage(HttpMethod.Post, $"https://localhost:7186/api/product");
             request.Content = new StringContent(requestBody, Encoding.UTF8, "application/json");
@@ -77,11 +75,12 @@ namespace SpecFlowPharmaGo.WebApi.StepDefinitions
             {
                 context.Set(response.StatusCode, "ResponseStatusCode");
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 _exception = ex;
             }
         }
+        
         [Then(@"salta un mensaje de error con datos invalidos y el producto no se agrega a la lista")]
         public void ThenSaltaUnMensajeDeErrorConDatosInvalidosYElProductoNoSeAgregaALaLista()
         {
@@ -101,7 +100,7 @@ namespace SpecFlowPharmaGo.WebApi.StepDefinitions
                 Assert.IsFalse(false);
             }
         }
-
+        
         
 
     }
