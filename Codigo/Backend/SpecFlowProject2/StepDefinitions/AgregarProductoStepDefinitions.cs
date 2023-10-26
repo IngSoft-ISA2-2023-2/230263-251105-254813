@@ -62,15 +62,15 @@ namespace SpecFlowPharmaGo.WebApi.StepDefinitions
         [When(@"hago click en el botón agregar")]
         public async Task WhenHagoClick()
         {
-            var req = new HttpRequestMessage(HttpMethod.Delete, $"https://localhost:7186/api/products/{1}");
-            //var res = await cli.SendAsync(req).ConfigureAwait(false);
+            
             HttpClientHandler cliHandler = new HttpClientHandler();
             cliHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
             var cli = new HttpClient(cliHandler);
-            cli.DefaultRequestHeaders.Add("Authorization", "3a4e5d4b-9c1a-402f-8e63-ec7d3120c9b7");
-  
+            cli.DefaultRequestHeaders.Add("Authorization", "E9E0E1E9-3812-4EB5-949E-AE92AC931401");
+            var req = new HttpRequestMessage(HttpMethod.Delete, $"https://localhost:7186/api/product/{1}");
+            var res = await cli.SendAsync(req).ConfigureAwait(false);
             string requestBody = JsonConvert.SerializeObject(_productModel);
-            var request = new HttpRequestMessage(HttpMethod.Post, $"https://localhost:7186/api/products");
+            var request = new HttpRequestMessage(HttpMethod.Post, $"https://localhost:7186/api/product");
             request.Content = new StringContent(requestBody, Encoding.UTF8, "application/json");
             var response = await cli.SendAsync(request).ConfigureAwait(false);
             try

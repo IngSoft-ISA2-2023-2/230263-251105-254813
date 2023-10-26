@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace PharmaGo.DataAccess.Repositories
 {
@@ -17,10 +18,5 @@ namespace PharmaGo.DataAccess.Repositories
             _context = context;
         }
 
-        public override void InsertOne(Product product)
-        {
-            _context.Entry(product).State = EntityState.Added;
-            _context.Set<Product>().Add(product);
-        }
     }
 }

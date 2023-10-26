@@ -75,11 +75,11 @@ namespace SpecFlowProject2.Features
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Insert new product correctly")]
+        [NUnit.Framework.DescriptionAttribute("Ingreso de codigo, nombre, precio válidos y descripcion valido.")]
         [NUnit.Framework.CategoryAttribute("mytag")]
-        [NUnit.Framework.TestCaseAttribute("new shaker", "product1", "59595", "200", null)]
-        [NUnit.Framework.TestCaseAttribute("new excercise ball", "product2", "45612", "300", null)]
-        public virtual void InsertNewProductCorrectly(string description, string name, string code, string price, string[] exampleTags)
+        [NUnit.Framework.TestCaseAttribute("12345", "desodorante", "Es para el cuerpo", "300", null)]
+        [NUnit.Framework.TestCaseAttribute("12347", "desodorante", "es para el cuerpo", "308", null)]
+        public virtual void IngresoDeCodigoNombrePrecioValidosYDescripcionValido_(string codigo, string nombre, string descripcion, string precio, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "mytag"};
@@ -89,12 +89,12 @@ namespace SpecFlowProject2.Features
             }
             string[] tagsOfScenario = @__tags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("description", description);
-            argumentsOfScenario.Add("name", name);
-            argumentsOfScenario.Add("code", code);
-            argumentsOfScenario.Add("price", price);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Insert new product correctly", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 9
+            argumentsOfScenario.Add("codigo", codigo);
+            argumentsOfScenario.Add("nombre", nombre);
+            argumentsOfScenario.Add("descripcion", descripcion);
+            argumentsOfScenario.Add("precio", precio);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ingreso de codigo, nombre, precio válidos y descripcion valido.", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+#line 33
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -114,23 +114,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 10
-testRunner.Given(string.Format("the name {0} of the product", name), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 34
+ testRunner.Given(string.Format("ingresamos el nombre {0} del producto", nombre), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 11
-testRunner.And(string.Format("the description {0} of the product", description), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 35
+ testRunner.And(string.Format("ingresamos la descripcion {0} del producto", descripcion), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 12
-testRunner.And(string.Format("the code {0} of the product", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 36
+ testRunner.And(string.Format("ingresamos el codigo {0} del producto", codigo), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 13
-testRunner.And(string.Format("the price {0} of the product", price), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 37
+ testRunner.And(string.Format("ingresamos el precio {0} del producto", precio), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 14
-testRunner.When("a user wants to add it to the system", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 38
+ testRunner.When("hago click en el botón agregar", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 15
-testRunner.Then("add the product to the user´s pharmacy and return the  product model", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 39
+ testRunner.Then("agrega el producto a la farmacia", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

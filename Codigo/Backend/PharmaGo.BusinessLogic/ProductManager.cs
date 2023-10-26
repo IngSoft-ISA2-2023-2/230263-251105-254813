@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PharmaGo.IBusinessLogic;
 using PharmaGo.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace PharmaGo.BusinessLogic
 {
@@ -22,11 +23,12 @@ namespace PharmaGo.BusinessLogic
 
         public ProductManager(IRepository<Session> sessionRespository,
                            IRepository<User> userRespository,
-                           IRepository<Pharmacy> pharmacyRepository)
+                           IRepository<Pharmacy> pharmacyRepository, IRepository<Product> productRepository)
         {
             _sessionRepository = sessionRespository;
             _userRepository = userRespository;
             _pharmacyRepository = pharmacyRepository;
+            _productRepository = productRepository;
         }
 
         public Product CreateProduct(Product product, string empleado)
@@ -55,9 +57,18 @@ namespace PharmaGo.BusinessLogic
                 throw new InvalidResourceException("The code product already exists in that pharmacy.");
             }
 
-            if (product.Pharmacy == null)
+            
+            var existingPharmacy = _pharmacyRepository.GetOneByExpression(p => p.Id == pharmacyOfProduct.Id);
+
+            if (existingPharmacy == null)
             {
-                product.Pharmacy = new Pharmacy();
+                // La entidad Pharmacy no está en el contexto, puedes agregarla a product
+                product.Pharmacy = pharmacyOfProduct;
+            }
+            else
+            {
+                // La entidad Pharmacy ya está en el contexto, no es necesario agregarla nuevamente
+                product.Pharmacy = existingPharmacy;
             }
             product.Pharmacy.Id = pharmacyOfProduct.Id;
             _productRepository.InsertOne(product);
