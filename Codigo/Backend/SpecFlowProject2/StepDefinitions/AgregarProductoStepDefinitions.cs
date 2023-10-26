@@ -82,11 +82,12 @@ namespace SpecFlowPharmaGo.WebApi.StepDefinitions
                 _exception = ex;
             }
         }
-        [Then(@"salta un mensaje de error con codigo invalido y el producto no se agrega a la lista")]
-        public void ThenSaltaUnMensajeDeErrorConCodigoInvalidoYElProductoNoSeAgregaALaLista()
+        [Then(@"salta un mensaje de error con datos invalidos y el producto no se agrega a la lista")]
+        public void ThenSaltaUnMensajeDeErrorConDatosInvalidosYElProductoNoSeAgregaALaLista()
         {
             Assert.AreEqual(500, (int)context.Get<HttpStatusCode>("ResponseStatusCode"));
         }
+
 
         [Then(@"agrega el producto a la farmacia")]
         public void ThenAddTheProductToPharmacy()
