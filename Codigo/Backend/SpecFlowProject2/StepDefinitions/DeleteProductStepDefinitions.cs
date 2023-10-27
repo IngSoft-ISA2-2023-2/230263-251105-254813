@@ -17,12 +17,11 @@ namespace SpecFlowProject2.StepDefinitions
             this.context = context;
         }
 
-        [Given(@"estoy logueado como empleado e ingreso un identificador <identificador> de un producto existente")]
-        public void GivenEstoyLogueadoComoEmpleadoEIngresoUnIdentificadorIdentificadorDeUnProductoExistente(int id)
+        [Given(@"estoy logueado como empleado e ingreso un codigo (.*) de un producto existente")]
+        public void GivenEstoyLogueadoComoEmpleadoEIngresoUnCodigoDeUnProductoExistente(int p0)
         {
-            this.productId = id;
+            this.productId = p0;
         }
-
 
         [When(@"hago click en el botón eliminar")]
         public async Task WhenHagoClickEnElBotonEliminar()
@@ -33,13 +32,9 @@ namespace SpecFlowProject2.StepDefinitions
             cli.DefaultRequestHeaders.Add("Authorization", "E9E0E1E9-3812-4EB5-949E-AE92AC931401");
             var req = new HttpRequestMessage(HttpMethod.Delete, $"https://localhost:7186/api/product/{1}");
             var res = await cli.SendAsync(req).ConfigureAwait(false);
-            //string requestBody = JsonConvert.SerializeObject(_productModel);
-            var request = new HttpRequestMessage(HttpMethod.Post, $"https://localhost:7186/api/product");
-            request.Content = new StringContent(requestBody, Encoding.UTF8, "application/json");
-            var response = await cli.SendAsync(request).ConfigureAwait(false);
             try
             {
-                context.Set(response.StatusCode, "ResponseStatusCode");
+                context.Set(res.StatusCode, "ResponseStatusCode");
             }
             catch (Exception ex)
             {

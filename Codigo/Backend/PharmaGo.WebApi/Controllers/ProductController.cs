@@ -31,14 +31,14 @@ namespace PharmaGo.WebApi.Controllers
             return Ok(productResponse);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{code}")]
         [AuthorizationFilter(new string[] { nameof(RoleType.Employee) })]
-        public IActionResult DeleteProduct([FromRoute] int id)
+        public IActionResult DeleteProduct([FromRoute] int code)
         {
             try
             {
-                _productManager.DeleteProduct(id);
-                return Ok(true);
+                _productManager.DeleteProduct(code);
+                return Ok("El producto se eliminó correctamente");
             }
             catch (Exception ex)
             {
