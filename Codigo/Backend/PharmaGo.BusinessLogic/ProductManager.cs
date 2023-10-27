@@ -33,33 +33,26 @@ namespace PharmaGo.BusinessLogic
 
         public Product CreateProduct(Product product, string empleado)
         {
-            //Controlar product not null
             if (product == null)
             {
                 throw new ResourceNotFoundException("Please create a product before inserting it.");
             }
             product.ValidProduct();
-
             string token = empleado;
             var guidToken = new Guid(token);
             Session session = _sessionRepository.GetOneByExpression(s => s.Token == guidToken);
             var userId = session.UserId;
             User user = _userRepository.GetOneDetailByExpression(u => u.Id == userId);
-
             Pharmacy pharmacyOfProduct = _pharmacyRepository.GetOneByExpression(p => p.Name == user.Pharmacy.Name);
             if (pharmacyOfProduct == null)
             {
                 throw new ResourceNotFoundException("The pharmacy of the drug does not exist.");
             }
-
             if (_productRepository.Exists(d => d.Code == product.Code && d.Pharmacy.Name == pharmacyOfProduct.Name))
             {
                 throw new InvalidResourceException("The code product already exists in that pharmacy.");
             }
-
-            
             var existingPharmacy = _pharmacyRepository.GetOneByExpression(p => p.Id == pharmacyOfProduct.Id);
-
             if (existingPharmacy == null)
             {
                 // La entidad Pharmacy no está en el contexto, puedes agregarla a product
@@ -74,7 +67,18 @@ namespace PharmaGo.BusinessLogic
             _productRepository.InsertOne(product);
             _productRepository.Save();
             return product;
+        }
 
+        void IProductManager.DeleteProduct(int id)
+        {
+            var productSaved = _productRepository.GetOneByExpression(p => p.Id == id);
+            if (productSaved == null) 
+            { 
+                throw new ResourceNotFoundException("The product to delete does not exist");
+            }
+            productSaved.Deleted = true;
+            _productRepository.UpdateOne(productSaved);
+            _productRepository.Save();
         }
     }
 }

@@ -10,5 +10,6 @@ namespace PharmaGo.IBusinessLogic
     public interface IProductManager
     {
         Product CreateProduct(Product product, string token);
+        void DeleteProduct(int id);
     }
 }
