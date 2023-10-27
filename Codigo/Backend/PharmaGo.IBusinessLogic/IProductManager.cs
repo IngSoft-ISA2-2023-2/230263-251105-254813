@@ -11,5 +11,6 @@ namespace PharmaGo.IBusinessLogic
     {
         Product CreateProduct(Product product, string token);
         void DeleteProduct(int id);
+        Product Update(int id, Product product);
     }
 }

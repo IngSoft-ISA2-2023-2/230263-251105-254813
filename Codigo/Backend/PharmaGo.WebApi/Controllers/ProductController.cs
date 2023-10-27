@@ -45,5 +45,14 @@ namespace PharmaGo.WebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPut("{id}")]
+        [AuthorizationFilter(new string[] { nameof(RoleType.Employee) })]
+        public IActionResult Update([FromRoute] int id, [FromBody] ProductModel productModel)
+        {
+            string token = HttpContext.Request.Headers["Authorization"];
+            Product product = _productManager.Update(id, productModel.ToEntity());
+            return Ok(new ProductModelResponse(product));
+        }
     }
 }

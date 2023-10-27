@@ -250,8 +250,13 @@ this.ScenarioInitialize(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Ingreso de codigo, nombre, precio válidos y descripcion valido.")]
+<<<<<<< HEAD
         [NUnit.Framework.TestCaseAttribute("12390", "desodorante", "Es para el cuerpo", "300", null)]
         [NUnit.Framework.TestCaseAttribute("12391", "desodorante", "es para el cuerpo", "308", null)]
+=======
+        [NUnit.Framework.TestCaseAttribute("12395", "desodorante", "Es para el cuerpo", "300", null)]
+        [NUnit.Framework.TestCaseAttribute("12397", "desodorante", "es para el cuerpo", "308", null)]
+>>>>>>> develop
         public virtual void IngresoDeCodigoNombrePrecioValidosYDescripcionValido_(string codigo, string nombre, string descripcion, string precio, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;

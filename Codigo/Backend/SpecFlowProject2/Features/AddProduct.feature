@@ -53,5 +53,5 @@ Scenario: Ingreso de codigo, nombre, precio válidos y descripcion valido.
 
 Examples:
 	| codigo | nombre                         | descripcion       | precio |
-	| 12390  | desodorante                    | Es para el cuerpo | 300    |
-	| 12391  | desodorante                    | es para el cuerpo | 308    |
+	| 22929  | desodorante                    | Es para el cuerpo | 300    |
+	| 23457 | desodorante                    | es para el cuerpo | 308    |
