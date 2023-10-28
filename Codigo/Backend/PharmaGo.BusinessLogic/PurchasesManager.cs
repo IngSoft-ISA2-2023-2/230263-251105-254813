@@ -51,7 +51,8 @@ namespace PharmaGo.BusinessLogic
                 throw new InvalidResourceException("The purchase date is a mandatory field");
 
             bool differentPharmacy = DistintasFarmaciasEnMismaCompra(purchase.details);
-            decimal total = 0;
+            decimal totalDrug = 0;
+            decimal totalProduct = 0;
             foreach (var detail in purchase.details)
             {
                 int pharmacyId = detail.Pharmacy.Id;
@@ -59,6 +60,7 @@ namespace PharmaGo.BusinessLogic
                     throw new ResourceNotFoundException($"Pharmacy Id is a mandatory field");
 
                 var pharmacy = _pharmacysRepository.GetOneByExpression(x => x.Id == pharmacyId);
+                var user = _userRepository.GetOneByExpression(x => x.Email == purchase.BuyerEmail);
                 if (pharmacy is null)
                     throw new ResourceNotFoundException($"Pharmacy {detail.Pharmacy.Id} not found");
 
@@ -66,17 +68,37 @@ namespace PharmaGo.BusinessLogic
                     throw new InvalidResourceException("The Quantity is a mandatory field");
 
                 string drugCode = detail.Drug.Code;
+
                 var drug = pharmacy.Drugs.FirstOrDefault(x => x.Code == drugCode && x.Deleted == false);
                 if (drug is null)
                     throw new ResourceNotFoundException($"Drug {drugCode} not found in Pharmacy {pharmacy.Name}");
+                int productCode = detail.Product.Code;
+                var product = pharmacy.Products.FirstOrDefault(x => x.Code == productCode && x.Deleted == false);
+                try
+                {
+                    if (user == null)
+                    {
 
+
+                        if (product is null)
+                            throw new ResourceNotFoundException($"Product {productCode} not found in Pharmacy {pharmacy.Name}");
+                        totalProduct = totalProduct + (product.Price * detail.QuantityOfProduct);
+                        detail.Product = product;
+                    }
+                }catch(Exception ex)
+                {
+                    throw new Exception("You must be an anonymous user");
+                }
                 detail.Pharmacy = pharmacy;
-                total = total + (drug.Price * detail.Quantity);
+                totalDrug = totalDrug + (drug.Price * detail.Quantity);
+                
                 detail.Price = drug.Price;
+                detail.PriceOfProduct = product.Price;
                 detail.Drug = drug;
+                
                 detail.Status = PENDING;
             }
-            purchase.TotalAmount = total;
+            purchase.TotalAmount = totalDrug + totalProduct;
             purchase.TrackingCode = generateTrackingCode();
             _purchasesRepository.InsertOne(purchase);
             _purchasesRepository.Save();

@@ -12,7 +12,10 @@ namespace PharmaGo.WebApi.Models.In
         public class PurchaseDetailModelRequest {
             public int PharmacyId { get; set; }
             public string Code { get; set; }
+
+            public int CodeOfProduct { get; set; }
             public int Quantity { get; set; }
+            public int QuantityOfProduct { get; set; }
         }
 
     }

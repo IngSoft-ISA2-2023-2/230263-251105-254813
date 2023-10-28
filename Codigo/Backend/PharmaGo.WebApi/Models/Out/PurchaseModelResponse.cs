@@ -19,6 +19,7 @@ namespace PharmaGo.WebApi.Models.Out
             public string Name { get; set; }
             public int Quantity { get; set; }
             public decimal Price { get; set; }
+            public decimal PriceOfProduct { get; set; }
             public int PharmacyId { get; set; }
             public string PharmacyName { get; set; }
             public string Status { get; set; }
@@ -42,8 +43,9 @@ namespace PharmaGo.WebApi.Models.Out
                         Quantity = detail.Quantity,
                         PharmacyId = detail.Pharmacy.Id,
                         PharmacyName = detail.Pharmacy.Name,
-                        Status = detail.Status
-                });
+                        Status = detail.Status,
+                        PriceOfProduct = detail.PriceOfProduct
+                });;
                 }
             }
         }

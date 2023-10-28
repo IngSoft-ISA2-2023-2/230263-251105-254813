@@ -1,6 +1,8 @@
 using Newtonsoft.Json;
+using NUnit.Framework;
 using PharmaGo.WebApi.Models.In;
 using System;
+using System.Net;
 using System.Text;
 using TechTalk.SpecFlow;
 
@@ -30,7 +32,7 @@ namespace SpecFlowProject2.StepDefinitions
             cliHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
             var cli = new HttpClient(cliHandler);
             cli.DefaultRequestHeaders.Add("Authorization", "E9E0E1E9-3812-4EB5-949E-AE92AC931401");
-            var req = new HttpRequestMessage(HttpMethod.Delete, $"https://localhost:7186/api/product/{1}");
+            var req = new HttpRequestMessage(HttpMethod.Delete, $"https://localhost:7186/api/product/{23457}");
             var res = await cli.SendAsync(req).ConfigureAwait(false);
             try
             {
@@ -45,13 +47,13 @@ namespace SpecFlowProject2.StepDefinitions
         [Then(@"el producto se elimina de la lista de productos")]
         public void ThenElProductoSeEliminaDeLaListaDeProductos()
         {
-            throw new PendingStepException();
+            Assert.AreEqual(200, (int)context.Get<HttpStatusCode>("ResponseStatusCode"));
         }
 
         [Then(@"obtengo un mensaje de error")]
         public void ThenObtengoUnMensajeDeError()
         {
-            throw new PendingStepException();
+            Assert.AreEqual(200, (int)context.Get<HttpStatusCode>("ResponseStatusCode"));
         }
     }
 }
