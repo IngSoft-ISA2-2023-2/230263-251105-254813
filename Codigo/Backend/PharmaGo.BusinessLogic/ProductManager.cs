@@ -76,6 +76,10 @@ namespace PharmaGo.BusinessLogic
             { 
                 throw new ResourceNotFoundException("The product to delete does not exist");
             }
+            if (productSaved.Deleted)
+            {
+                throw new ResourceNotFoundException("The product you want to delete has already been deleted");
+            }
             productSaved.Deleted = true;
             _productRepository.UpdateOne(productSaved);
             _productRepository.Save();

@@ -53,7 +53,7 @@ namespace SpecFlowProject2.StepDefinitions
         [Then(@"obtengo un mensaje de error")]
         public void ThenObtengoUnMensajeDeError()
         {
-            Assert.AreEqual(200, (int)context.Get<HttpStatusCode>("ResponseStatusCode"));
+            Assert.AreEqual(400, (int)context.Get<HttpStatusCode>("ResponseStatusCode"));
         }
     }
 }
