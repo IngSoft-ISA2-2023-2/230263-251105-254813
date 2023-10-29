@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PharmaGo.Domain.Entities;
 using PharmaGo.IDataAccess;
 using System.Linq.Expressions;
 
@@ -65,6 +66,11 @@ namespace PharmaGo.DataAccess.Repositories
         public virtual T GetOneDetailByExpression(Expression<Func<T, bool>> expression)
         {
             return _context.Set<T>().FirstOrDefault(expression);
+        }
+
+        public IEnumerable<Product> GetAllProducts(Pharmacy pharmacy)
+        {
+            return _context.Set<Product>().Where(p => p.Id == pharmacy.Id && !p.Deleted);
         }
     }
 }

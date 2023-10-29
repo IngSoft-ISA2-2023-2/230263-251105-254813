@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using PharmaGo.Domain.Entities;
+using System.Linq.Expressions;
 
 namespace PharmaGo.IDataAccess
 {
@@ -14,5 +15,6 @@ namespace PharmaGo.IDataAccess
         bool Exists(T elem);
         IEnumerable<T> GetAllBasicByExpression(Expression<Func<T, bool>> expression);
         T GetOneDetailByExpression(Expression<Func<T, bool>> expression);
+        IEnumerable<Product> GetAllProducts(Pharmacy pharmacy);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PharmaGo.BusinessLogic;
 using PharmaGo.Domain.Entities;
+using PharmaGo.Domain.SearchCriterias;
 using PharmaGo.IBusinessLogic;
 using PharmaGo.WebApi.Enums;
 using PharmaGo.WebApi.Filters;
@@ -19,6 +20,15 @@ namespace PharmaGo.WebApi.Controllers
         public ProductController(IProductManager manager)
         {
             _productManager = manager;
+        }
+
+        [HttpGet]
+        public IActionResult GetAllProducts()
+        {
+            string token = HttpContext.Request.Headers["Authorization"];
+            IEnumerable<Product> products = _productManager.GetAllProducts(token);
+            IEnumerable<ProductBasicModel> productsToReturn = products.Select(p => new ProductBasicModel(p));
+            return Ok(productsToReturn);
         }
 
         [HttpPost]

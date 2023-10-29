@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using PharmaGo.IBusinessLogic;
 using PharmaGo.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using PharmaGo.Domain.SearchCriterias;
 
 namespace PharmaGo.BusinessLogic
 {
@@ -72,8 +73,8 @@ namespace PharmaGo.BusinessLogic
         void IProductManager.DeleteProduct(int code)
         {
             var productSaved = _productRepository.GetOneByExpression(p => p.Code == code);
-            if (productSaved == null) 
-            { 
+            if (productSaved == null)
+            {
                 throw new ResourceNotFoundException("The product to delete does not exist");
             }
             if (productSaved.Deleted)
@@ -104,6 +105,25 @@ namespace PharmaGo.BusinessLogic
             _productRepository.UpdateOne(productSaved);
             _productRepository.Save();
             return productSaved;
+        }
+
+        public IEnumerable<Product> GetAllProducts(string token)
+        {
+            Product productToSearch = new Product();
+            var guidToken = new Guid(token);
+            Session session = _sessionRepository.GetOneByExpression(s => s.Token == guidToken);
+            var userId = session.UserId;
+            User user = _userRepository.GetOneDetailByExpression(u => u.Id == userId);
+            Pharmacy pharmacyOfProduct = _pharmacyRepository.GetOneByExpression(p => p.Name == user.Pharmacy.Name);
+            if (pharmacyOfProduct != null)
+            {
+                productToSearch.Pharmacy = pharmacyOfProduct;
+            }
+            else
+            {
+                throw new ResourceNotFoundException("The pharmacy to get products of does not exist.");
+            }
+            return _productRepository.GetAllProducts(productToSearch.Pharmacy);
         }
     }
 }
