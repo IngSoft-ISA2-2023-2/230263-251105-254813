@@ -70,7 +70,7 @@ namespace PharmaGo.DataAccess.Repositories
 
         public IEnumerable<Product> GetAllProducts(Pharmacy pharmacy)
         {
-            return _context.Set<Product>().Where(p => p.Id == pharmacy.Id && !p.Deleted);
+            return _context.Set<Product>().Where(p => p.Pharmacy.Id == pharmacy.Id && !p.Deleted);
         }
     }
 }

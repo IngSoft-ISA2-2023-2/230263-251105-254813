@@ -109,21 +109,16 @@ namespace PharmaGo.BusinessLogic
 
         public IEnumerable<Product> GetAllProducts(string token)
         {
-            Product productToSearch = new Product();
             var guidToken = new Guid(token);
             Session session = _sessionRepository.GetOneByExpression(s => s.Token == guidToken);
             var userId = session.UserId;
             User user = _userRepository.GetOneDetailByExpression(u => u.Id == userId);
-            Pharmacy pharmacyOfProduct = _pharmacyRepository.GetOneByExpression(p => p.Name == user.Pharmacy.Name);
-            if (pharmacyOfProduct != null)
-            {
-                productToSearch.Pharmacy = pharmacyOfProduct;
-            }
-            else
+            Pharmacy pharmacyOfUser = _pharmacyRepository.GetOneByExpression(p => p.Name == user.Pharmacy.Name);
+            if (pharmacyOfUser == null)
             {
                 throw new ResourceNotFoundException("The pharmacy to get products of does not exist.");
             }
-            return _productRepository.GetAllProducts(productToSearch.Pharmacy);
+            return _productRepository.GetAllProducts(pharmacyOfUser);
         }
     }
 }
