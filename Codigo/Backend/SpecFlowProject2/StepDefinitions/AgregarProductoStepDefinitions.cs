@@ -68,7 +68,7 @@ namespace SpecFlowPharmaGo.WebApi.StepDefinitions
             var cli = new HttpClient(cliHandler);
             cli.DefaultRequestHeaders.Add("Authorization", "E9E0E1E9-3812-4EB5-949E-AE92AC931401");
             string requestBody = JsonConvert.SerializeObject(_productModel);
-            var request = new HttpRequestMessage(HttpMethod.Post, $"https://localhost:7186/api/product");
+            var request = new HttpRequestMessage(HttpMethod.Post, $"https://localhost:5001/api/product");
             request.Content = new StringContent(requestBody, Encoding.UTF8, "application/json");
             var response = await cli.SendAsync(request).ConfigureAwait(false);
             try
